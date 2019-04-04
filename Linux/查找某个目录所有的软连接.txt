@@ -1,0 +1,22 @@
+在 /dir1 下查找 /dir2 目录的所有软链接文件：
+方法1：
+find /dir1 -type l -exec bash -c "file '{}'|grep -q /dir2 && echo '{}'" \;
+
+方法2：
+编辑脚本
+vim find_symlinks.sh
+#!/bin/bash
+# find symlinks of dir $2 in dir $1
+find $1 -type l > /tmp/symlinks
+for symlink in $(cat /tmp/symlinks)
+do
+readlink $symlink | grep -q $2 && echo $symlink
+done
+rm -f /tmp/symlinks
+执行脚本
+sh find_symlinks.sh dir1 dir2
+
+方法3：
+yum install symlinks -y
+symlinks -r /dir1 | grep /dir2|awk '{print $2}'
+此方法不能跨分区，-r 后是接目录

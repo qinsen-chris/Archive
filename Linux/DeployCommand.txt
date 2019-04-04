@@ -1,0 +1,27 @@
+############    deply1
+chown -R tomcat:tomcat /alidata1/wwwroot/guoxinsuo1/deploy1/WEB-INF/
+rm -f /alidata1/wwwroot/guoxinsuo1/root
+ln -s /alidata1/wwwroot/guoxinsuo1/deploy1 /alidata1/wwwroot/guoxinsuo1/root
+service tomcat1 stop
+service tomcat1 start
+
+
+
+
+############    deply2
+chown -R tomcat:tomcat /alidata1/wwwroot/guoxinsuo1/deploy2/WEB-INF/
+rm -f /alidata1/wwwroot/guoxinsuo1/root
+ln -s /alidata1/wwwroot/guoxinsuo1/deploy2 /alidata1/wwwroot/guoxinsuo1/root
+service tomcat1 stop
+service tomcat1 start
+
+
+
+
+
+############    deply3
+chown -R tomcat:tomcat /alidata1/wwwroot/guoxinsuo1/deploy3/WEB-INF/
+rm -f /alidata1/wwwroot/guoxinsuo1/root
+ln -s /alidata1/wwwroot/guoxinsuo1/deploy3 /alidata1/wwwroot/guoxinsuo1/root
+service tomcat1 stop
+service tomcat1 start

@@ -1,0 +1,167 @@
+1.  cd 
+作用： 进入某目录, change directory, 后跟目录名，如果不跟目录则进入用户家目录
+用法：cd [dir]
+
+. .. 是指当前目录和父目录（上一层目录）
+- 表示上一次的工作目录
+
+进入父目录          ：cd ..
+进入上一次的工作目录：cd -
+
+
+2. ls
+作用：列出当前目录下的文件及目录，可以理解为list的简写
+[root@localhost ~]# ls
+anaconda-ks.cfg  get-pip.py
+
+3. ll 
+作用：
+ll是ls的别名命令ll='ls -l --color=auto' 
+即以长选项列出当前目录下的文件及目录，可以看到权限属性、大小、修改时间
+[root@localhost ~]# ll
+total 16336
+-rw-------.  1 root  root      1237 Mar 21 23:39 anaconda-ks.cfg
+-rw-r--r--.  1 root  root   1595408 Nov  7 03:30 get-pip.py
+
+4. cp 
+作用：copy复制
+cp [src] [dest]
+例1：把当前目录的test.py文件复制到/tmp目录
+[root@localhost ~]# cp test.py /tmp
+例2：把当前目录的test.py文件复制到/tmp目录，并改名为test1.py
+[root@localhost ~]# cp test.py /tmp/test1.py
+
+5. mv
+作用：move移动或改名
+mv [src] [dest]
+
+例1：把当前目录的test.py文件移动到/tmp目录
+[root@localhost ~]# mv test.py /tmp
+
+例2：把当前目录的test.py改名为test1.py
+mv test.py test1.py
+
+6. mkdir
+作用：创建目录make directory
+mkdir dirname
+在根目录/下创建一个data目录
+mkdir /data
+
+7. rmdir 
+作用：删除一个空目录, remove directory
+rmdir /data
+
+8. rm 
+作用：删除文件或目录,谨慎使用
+删除文件
+rm -f file_name
+删除目录
+rm -rf dir_name
+
+9. hostname
+作用：查看本机主机名
+常用 hostname -I 查看机器的IP信息
+
+10. touch
+作用：创建一个文件
+touch file_name
+
+11. cat
+作用：查看文件所有内容
+cat file_name
+如果文件内容较多可以使用 more 和 less 查看，会一页一页显示
+more file_name
+less file_name
+
+12. vim
+作用：编辑文件，如果文件不存在编辑保存后自动创建。
+vim file_name
+vim用法很多，可百度学习。
+
+13. head 和 tail
+作用：output the first part of files 显示开头部分
+默认不加参数是显示前10行，
+对应的是tail: output the last part of files 显示文件结尾部分
+默认不加参数是显示最后10行，
+显示开头或是结尾的50行的用法如下：
+head -50
+tail -50
+
+14. pwd
+作用：显示当前工作目录，public work directory
+[gcl@localhost ~]$ pwd
+/home/gcl
+
+15. wc 
+作用： 统计文件的行数、单词数，字节数
+一般用 -l 选项统计行数
+[root@localhost ~]# wc -l /etc/passwd
+23 /etc/passwd
+[root@localhost ~]# cat /etc/passwd|wc
+     23      47    1151
+[root@localhost ~]# cat /etc/passwd|wc -l
+23
+
+16. df
+作用：查看磁盘分区挂载信息
+[root@localhost ~]# df -hT
+Filesystem          Type      Size  Used Avail Use% Mounted on
+/dev/mapper/cl-root xfs        17G  3.7G   14G  22% /
+devtmpfs            devtmpfs  1.4G     0  1.4G   0% /dev
+tmpfs               tmpfs     1.4G     0  1.4G   0% /dev/shm
+tmpfs               tmpfs     1.4G  8.7M  1.4G   1% /run
+tmpfs               tmpfs     1.4G     0  1.4G   0% /sys/fs/cgroup
+/dev/sda1           xfs      1014M  184M  831M  19% /boot
+tmpfs               tmpfs     284M     0  284M   0% /run/user/0
+
+
+17. which
+作用：查看系统中是否存在某命令,如果存在则显示出来path路径
+which python
+[root@localhost ~]# which python
+/usr/local/bin/python
+
+18. du
+作用：统计文件或目录占用空间的大小
+[root@localhost ~]# du -sh get-pip.py 
+1.6M	get-pip.py
+
+19. tar
+作用：打包和解包
+打包：
+把/etc目录下的所有内容打包成一个文件file_name.tar.gz
+tar -cvzf file_name.tar.gz  /etc/*
+
+解包：
+解到当前目录
+tar -xvf file_name.tar.gz
+解到目标目录,加 -C 选项后跟目标目录
+tar -xvf file_name.tar.gz -C /usr/local/
+
+20. grep
+作用：过滤输出的内容
+查看passwd内容中包含root的行
+[root@localhost ~]# cat /etc/passwd|grep root
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+dockerroot:x:997:994:Docker User:/var/lib/docker:/sbin/nologin
+
+
+21. ps
+作用：查看进程信息,一般是结合grep查看某进程信息
+ps -aux|grep tomcat|grep 12001
+
+22. ping
+作用：网络连通性检测
+
+ping baidu.com
+ping 10.10.2.17
+
+23. clear
+作用：清屏
+也可以按Ctrl+l
+
+24. id
+作用：查看用户是否存在
+[root@cnszaibt01 ~]# id tomcat
+uid=502(tomcat) gid=502(tomcat) groups=502(tomcat)

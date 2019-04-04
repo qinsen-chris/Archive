@@ -1,0 +1,124 @@
+1. gitlab 
+
+	安装路径：/opt/gitlab
+	数据路径：/var/opt/gitlab
+	配置文件：/etc/gitlab/gitlab.rb
+	
+	启动命令(需要root启动)：
+	gitlab-ctl start
+	
+	其他支持命令：
+	gitlab-ctl stop
+	gitlab-ctl restart
+	gitlab-ctl status
+	gitlab-ctl service-list
+	更多可查看帮助：
+	gitlab-ctl  -h
+
+
+2. zentao禅道
+	
+	安装路径：/opt/zbox
+	
+	启动命令(需要root启动)：
+	/opt/zbox/zbox -ap 8082 start  
+	
+	查看帮助：
+	[root@gitlab-145 zbox]# /opt/zbox/zbox -h
+	Usage: zbox.php {start|stop|restart|status}
+	
+	Options:
+		-h --help Show help.
+		-ap --aport Apache port, default 80.
+		-mp --mport Mysql port, default 3306.
+
+3. nexus maven私服
+	
+	安装路径：/opt/nexus
+	配置文件：/opt/nexus/nexus-2.14.4-03/conf/nexus.properties
+	
+	启动命令：
+	root用户：su - gcl -c "/opt/nexus/nexus-2.14.4-03/bin/nexus start"
+	gcl用户：/opt/nexus/nexus-2.14.4-03/bin/nexus start
+	
+	查看帮助：
+	[root@gitlab-145 bin]# ./nexus -h
+	Usage: ./nexus { console | start | stop | restart | status | dump }
+	
+4. mysql 服务
+
+    配置文件：/etc/my.cnf
+	修改mysql的配置只需修改服务器上的这个文件即可，改完后重启服务。
+	
+	启动关闭和重启命令：
+	
+	汇付：
+	docker start mysql_hf
+	docker stop mysql_hf
+	docker restart mysql_hf
+	
+	存管：
+	docker start mysql_cg
+	docker stop mysql_cg
+	docker restart mysql_cg
+	
+5. guoxinsuo服务
+
+	程序所在目录：
+	汇付：/alidata1/wwwroot/guoxinsuo/webapps/hf/root
+	存管：/alidata1/wwwroot/guoxinsuo/webapps/cg/root
+	如有临时修改程序中配置选项可进入程序目录修改相关配置，修改完重启服务。
+	
+	启动关闭和重启命令：
+	
+	汇付：
+	docker start guoxinsuo_hf
+	docker stop guoxinsuo_hf
+	docker restart guoxinsuo_hf
+	
+	存管：
+	docker start guoxinsuo_cg
+	docker stop guoxinsuo_cg 
+	docker restart guoxinsuo_cg
+	
+6. elk 服务及报警服务
+	
+	elk服务：
+	elasticsearch：
+	配置文件：/etc/elasticsearch/elasticsearch.yml
+	启动服务：
+	systemctl start elasticsearch
+	systemctl stop elasticsearch
+	systemctl restart elasticsearch
+	设置开机自启动：
+	systemctl enable elasticsearch
+	
+	logstash:
+	配置文件：/etc/logstash/conf.d/logstash.conf
+	启动服务：
+	systemctl start logstash
+	systemctl stop logstash
+	systemctl restart logstash
+	设置开机自启动：
+	systemctl enable logstash
+	
+	kibana：/etc/kibana/kibana.yml
+	启动服务：
+	systemctl start kibana
+	systemctl stop kibana
+	systemctl restart kibana
+	设置开机自启动：
+	systemctl enable kibana
+	
+	
+    报警服务：
+	定时任务每小时的第30分即半点执行脚本：
+	30 * * * * /usr/local/bin/alert.py
+	 
+	邮件内容中的链接是用了httpd服务，要确保此服务为启动状态：
+	启动并设置开机自启动命令：
+	systemctl start httpd
+	systemctl enable httpd
+	 
+	 
+	

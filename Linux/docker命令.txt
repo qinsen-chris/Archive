@@ -1,0 +1,61 @@
+用docker部署的服务：guoxinsuo marketing xxl mysql redis mongodb
+
+一般情况下没有进入容器的需求，日志文件已经映射出来了，
+日志文件映射到服务器上的路径为：
+汇付：/alidata1/logs/guoxinsuo/hf/logs
+存管：/alidata1/logs/guoxinsuo/cg/logs
+
+程序文件已经映射到服务器上，可以直接修改服务器上的程序配置文件，
+如 application.conf ，修改是临时修改，下次部署就又恢复默认的配置了，如需修改成
+默认配置，需要修改sed替换文件,
+guoxinsuo 程序映射到服务器上的目录为 ：
+汇付：/alidata1/wwwroot/guoxinsuo/webapps/hf/root
+存管：/alidata1/wwwroot/guoxinsuo/webapps/cg/root
+修改application.conf文件可直接用以下命令修改：
+vim /alidata1/wwwroot/guoxinsuo/webapps/hf/root/WEB-INF/application/conf/application.conf 
+修改完后重启下服务：
+docker restart guoxinsuo_hf
+
+1. 进入容器里面的命令(一般用不到，作为了解):
+docker exec -it container_name /bin/bash
+如果容器中找不到bash命令，可以尝试其他命令如 /bin/sh 或是直接写sh、bash
+
+实例：
+guoxinsuo 汇付服务进入容器的命令，guoxinsuo_hf 为容器名称
+docker exec -it guoxinsuo_hf bash
+
+guoxinsuo 存管服务进入容器的命令
+docker exec -it guoxinsuo_cg bash
+
+说明： 
+一般用 bash 命令进入的容器，提示符会变成root用户的，如 [root@ee8ba7680333 /]#
+一般用 sh 命令进入容器，提示符可能不会带用户，可能情况：sh-4.1#、#
+容器是一个简化版的系统环境，只有比较基础的命令，cd vi mv cp等，默认是没有vim命令的
+
+2. 从容器里退出的命令:
+exit
+
+3. 不进入容器的方式执行容器里的命令
+docker exec -it container_name cmd
+其中cmd为要执行的命令，此命令在容器中必须存在
+
+实例：
+docker exec -it guoxinsuo_hf ls
+
+4. 重启容器的命令：
+docker restart container_name
+成功后命令行会返回容器的名字。
+
+实例：重启汇付环境的服务
+docker restart guoxinsuo_hf
+
+重启包含了停止和启动
+docker stop container_name
+docker start container_name
+
+5. 查看所有正在运行的容器：
+docker ps
+
+如果运行容器太多，可用grep过滤
+docker ps|grep guoxinsuo
+docker ps|grep mysql
