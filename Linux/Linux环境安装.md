@@ -1,6 +1,4 @@
- 
-
-# 查看命令
+ # 查看命令
 
 ----查看linux系统信息------------- --
 
@@ -76,9 +74,6 @@ export PATH=$PATH:$MAVEN_HOME/bin
 注：如果依然不生效可以尝试重启系统
 
  
-
- 
-
 ## lrzsz
 
 **yum install lrzsz**
@@ -86,34 +81,21 @@ export PATH=$PATH:$MAVEN_HOME/bin
 使用ssh协议传输内容  
 
  
-
 1、 rz 上传 
 
 sz [option] file  下载
 
- 
-
 2、工具选SFTP协议 端口号22
-
- 
-
 ## zip
 
 **yum install -y unzip zip**
 
 1、解压zip文件
-
 unzip 文件名.zip
 
- 
-
 2、压缩一个zip文件 
-
 zip 文件名.zip 文件夹名称或文件名     
 
- 
-
- 
 
 ## 1安装jdk 
 
@@ -148,22 +130,15 @@ Version:8.5
 启动   ./startup.sh
 
 ## 3安装git
-
 rpm -qa|grep git  查看是否安装了git
-
- 
 
 Version:2.1
 
 <http://blog.csdn.net/u013256816/article/details/54743470>
 
- 
-
 echo $PATH 中找不到git的配置？
 
 ## 4安装mysql
-
- 
 
 卸载mariadb
 
@@ -175,62 +150,48 @@ centos默认安装了mariadb，因此，在安装mysql之前，需要卸载系�
 
 若依赖包检测失败，可以使用强制卸载的命令：rpm -e --nodeps "mariadb的包名"
 
- 
 
-卸载及安装 ： https://blog.csdn.net/li_wei_quan/article/details/78549891
+卸载及安装 ：https://blog.csdn.net/li_wei_quan/article/details/78549891
 
-在线安装 ：
+在线安装 ：http://www.cnblogs.com/ianduin/p/7679239.html
 
-<http://www.cnblogs.com/ianduin/p/7679239.html>
+启动mysql: systemctl start mysqld
+查看状态：systemctl status mysqld
 
- 
+安装完成后，在/var/log/mysqld.log 下查看，root用户初始密码， 登录后修改root密码。
 
 ### 用户权限设置问题
+创建普通用户：
+CREATE USER qinsen@localhost IDENTIFIED BY 'QSpassword';
+Delete FROM user Where User='qinsen' and Host='localhost';
 
-CREATE USER foo@localhost IDENTIFIED BY '123';
-
- 
-
-grant all privileges on *.* to root@'%' identified by 'root' ;
-
+###创建用户，并赋予所有权限
+grant all privileges on *.* to qinsen@'%' identified by 'QSpassword' ;
 flush privileges;
 
  
 
 如果提示密码错误，（mariadb中默认安装了安全插件）则要修改规则：
-
-mysql> set global validate_password_policy=**0**;  //默认是1，即MEDIUM，所以刚开始设置的密码必须符合长度，且必须含有数字，小写或大写字母，特殊字符。
-
-mysql> set global validate_password_length=**1**;  // 默认是 8
+即MEDIUM，所以刚开始设置的密码必须符合长度，且必须含有数字，小写或大写字母，特殊字符。
+mysql> set global validate_password_policy=0;  //默认是1，
+mysql> set global validate_password_length=1;  // 默认是 8
 
  
 
 ### 修改端口
-
 编辑/etc/my.cnf文件
 
  
-
 ### Mysql表名大小写
-
 /etc/my.cnf
-
 lower_case_table_names=1
 
-service mysqld restart
-
- 
-
 ### mysql now()函数调用系统时间不对修正方法
-
 vi /etc/my.cnf
-
 定位到[mysqld]所在的位置，在它的下面加上
 
 default-time-zone = '+8:00'
-
 这一行，然后保存退出，重新启动。
-
 service mysqld restart
 
 ## 5安装tcl  8.6.1  
