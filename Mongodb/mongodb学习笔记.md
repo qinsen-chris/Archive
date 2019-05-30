@@ -220,7 +220,7 @@ var list = db.usertemplate.aggregate([
         ]).toArray();
 print( list);
 
-
+# 示例
 db.system.js.save({_id:"cronDeleteQuota", 
     value:function(skipNum,limitNum,remainNum){ 
         var datalist = db.userquota_revisions.aggregate([
