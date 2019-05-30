@@ -219,3 +219,27 @@ var list = db.usertemplate.aggregate([
             {"$project":{"userId":1,"qsize":{"$size":{ "$ifNull":["$templates",[]]}},_id:0}}
         ]).toArray();
 print( list);
+
+
+db.system.js.save({_id:"cronDeleteQuota", 
+    value:function(skipNum,limitNum,remainNum){ 
+        var datalist = db.userquota_revisions.aggregate([
+                {"$project":{"userId":1,"datasize":{"$size":{ "$ifNull":["$quotaRevisions",[]]}},_id:0}},
+                {"$skip":skipNum},
+                {"$limit":limitNum}
+            ]).toArray();
+
+        for(i=0;i<datalist.length;i++){
+            if(datalist[i].datasize > remainNum){
+                for(j=0;j< datalist[i].datasize - remainNum;j++){
+                    db.userquota_revisions.update(
+                       {"userId":datalist[i].userId},
+                       {$pop:{"quotaRevisions":-1}}
+                    )  
+                }
+            }
+        }
+    }
+}); 
+
+db.eval('cronDeleteQuota(0,10,5)')
