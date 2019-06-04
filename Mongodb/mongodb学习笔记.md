@@ -123,6 +123,8 @@ db.getCollection('usersector').update(
 )
     
 # /**批量删除数组数据 */
+内嵌数组是字符串：
+
 db.getCollection('usersector').update(
 {"userId":9001,"userSectorSecuritys.sectorId":1000000010},
     {$pullAll:{
@@ -130,7 +132,17 @@ db.getCollection('usersector').update(
             }
     }
 )
-    
+
+
+
+内嵌数组是对象：
+
+db.userdoctemplate.update({"userId":"1001"},
+
+{$pull:{"templateTreePropertys":{"catalogueID":{"$in":["1","2"]}}}})    
+
+
+
 # 修改多层内嵌数组， 只能在mongo shell 下执行， Robo 3T只支持3.4版本， 3.6版本不支持
 db.userquota.update(
     {"userId":1002},
