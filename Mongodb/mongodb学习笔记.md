@@ -161,9 +161,10 @@ db.userquota.update(
     }
 )
 # 多层嵌套数组插入， 插入第四层，则前面三级目录要传值 
+```java
 db.userquota.update(
     {"userId":1002},
-    {$push:{"quotaTree.$[elem].subCatalogue.$[j].subCatalogue.$[k].subCatalogue":{"catalogueID":1000000002144,"catalogueName":"ceshi2144"}}},
+    {$push:{"quotaTree.$[elem].subCatalogue.$[j].subCatalogue.$[k].subCatalogue":    {"catalogueID":1000000002144,"catalogueName":"ceshi2144"}}},
     {arrayFilters:[
             {            
                 "elem.catalogueID":1000000002                             
@@ -177,8 +178,10 @@ db.userquota.update(
         ]
     }
 )
-    
+```
+
 # 多层嵌套数组插入，按位置插入。 $position必须和$each一起使用， $each必须是数组
+```java
 db.userquota.update(
     {"userId":1002},
     {$push:{"quotaTree.$[i].subCatalogue.$[j].subCatalogue.$[k].subCatalogue":
@@ -201,11 +204,11 @@ db.userquota.update(
         ]
     }
 )
-
+```
 
 # 存储过程
 
-db.system.js.find();
+```java db.system.js.find();
 db.system.js.save({_id:"addNumbers", value:function(x, y){ return x + y; }});
 db.eval('addNumbers(1,4)')
 
@@ -255,3 +258,15 @@ db.system.js.save({_id:"cronDeleteQuota",
 }); 
 
 db.eval('cronDeleteQuota(0,10,5)')
+
+```
+# java实现删除集合中全部数据
+```java
+        MongoCollection<Document> col =mongoTemplate.getCollection(UserDataCollection.USER_QUOTA_VERSION);
+        col.deleteMany(new Bson() {
+            @Override
+            public <TDocument> BsonDocument toBsonDocument(Class<TDocument> aClass, CodecRegistry codecRegistry) {
+                return new BsonDocument();
+            }
+        });
+```
