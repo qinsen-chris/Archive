@@ -59,3 +59,46 @@ docker ps
 如果运行容器太多，可用grep过滤
 docker ps|grep guoxinsuo
 docker ps|grep mysql
+
+
+
+----------------------------study------------------------------
+#查看版本
+docker version
+#查找镜像
+docker search mysql
+
+#拉取镜像 版本为5.7
+docker pull mysql:5.7
+
+#查看镜像
+docker images 
+
+#删除镜像
+docker rmi imageid
+
+
+#启动容器 --name 起的名字 -d 后台运行，不打印日志 
+docker run --name myName -d tomcat
+
+#查看运行的容器 -a 可以查看所有状态的容器
+docker ps
+
+#停止运行的容器
+docker stop 容器id
+
+#再次启动容器
+docker start 容器id
+
+#删除容器
+docker rm 容器id
+
+#启动一个做了端口映射的容器 先stop容器。 主机端口:容器内部端口 \imageName为镜像名称
+docker run -d -p 8888:8080 imageName
+
+#linux防火墙
+service firewalld status 查看防火墙状态
+service firewalld stop   关闭防火墙
+
+#查看容器日志
+docker logs containerName/容器id
