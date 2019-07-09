@@ -63,6 +63,8 @@ docker ps|grep mysql
 
 
 ----------------------------study------------------------------
+http://www.manongjc.com/article/33389.html
+
 #查看版本
 docker version
 #查找镜像
@@ -86,6 +88,8 @@ docker ps
 
 #停止运行的容器
 docker stop 容器id
+#直接停止容器
+docker kill 容器名 
 
 #再次启动容器
 docker start 容器id
@@ -102,3 +106,16 @@ service firewalld stop   关闭防火墙
 
 #查看容器日志
 docker logs containerName/容器id
+
+docker logs [-f] [-t] [--tail] 容器名
+-f --follows=true | false 默认为false 一直跟踪日志的变化并返回结果
+-t --timestamps=true | false 默认为false 在返回的结果上加上时间戳
+–tail= ‘all’ 选择结尾处多少数量的日志，不指定返回所有的日志
+
+#查看容器内的进程
+docker top 容器名
+
+#登录守护式容器方式：
+docker exec -it 容器名称 (或者容器ID)  /bin/bash
+
+
