@@ -73,14 +73,14 @@ export PATH=$PATH:$MAVEN_HOME/bin
 
 注：如果依然不生效可以尝试重启系统
 
- 
+
 ## lrzsz
 
 **yum install lrzsz**
 
 使用ssh协议传输内容  
 
- 
+
 1、 rz 上传 
 
 sz [option] file  下载
@@ -181,7 +181,7 @@ mysql> set global validate_password_length=1;  // 默认是 8
 ### 修改端口
 编辑/etc/my.cnf文件
 
- 
+
 ### Mysql表名大小写
 /etc/my.cnf
 lower_case_table_names=1
@@ -569,6 +569,22 @@ Selinux：
 **查看本机关于****IPTABLES****的设置情况**
 
 iptables -L -n
+
+
+
+
+
+#-------------------------------------------------------------------------------------
+
+服务器
+
+export JAVA_HOME=/root/app/jdk1.8.0_191
+export JRE_HOME=/root/app/jdk1.8.0_191/jre
+export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+export MAVEN_HOME=/root/app/apache-maven-3.2.5
+export GRADLE_HOME=/root/app/gradle-4.7
+
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin:$MAVEN_HOME/bin:$GRADLE_HOME/bin
 
  
 
