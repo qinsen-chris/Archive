@@ -12,7 +12,7 @@ Dubbo 2.6.2 学习笔记
 
 解压
 
-运行 \zookeeper-3.4.13\bin 下的zkServer.sh，第一次可能会报错，修改conf目录下配置文件名称为zoo.cfg
+运行 \zookeeper-3.4.13\bin 下的zkServer.cmd，第一次可能会报错，修改conf目录下配置文件名称为zoo.cfg
 
 测试：启动bin目录下 zkCli.cmd
 

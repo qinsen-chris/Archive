@@ -1,3 +1,7 @@
+---
+typora-root-url: ..\ZeroMQ\assets
+---
+
 Elasticsearch+Kibnana+Logstash
 
 视频资源：
@@ -65,10 +69,6 @@ http://139.217.216.24:9200/keysearch/secumain/611307996681/_termvectors?fields=s
 es笔记：
 
 1、在mapping文件中可以对某些字段不做索引，以节省空间。该字段不用于搜索和查询
-
-
-
-
 
 
 
