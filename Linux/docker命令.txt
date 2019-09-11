@@ -118,4 +118,16 @@ docker top 容器名
 #登录守护式容器方式：
 docker exec -it 容器名称 (或者容器ID)  /bin/bash
 
+退出 exec
+
+拷贝宿主文件到容器：
+docker cp 宿主目录/文件  id:容器目录
+
+拷贝宿主文件到主机 
+docker cp 容器名:容器里面的路径  宿主机的相应路径 
+
+
+
+
+
 

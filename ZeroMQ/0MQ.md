@@ -286,3 +286,15 @@ worker2.connect("tcp://127.0.0.1:5558");
 
 2：Exception in thread "Thread-18" java.lang.UnsatisfiedLinkError: org.zeromq.ZMQ$Socket.finalize()V
 https://yq.aliyun.com/articles/43455
+
+
+
+3：Assertion failed: ok (..\..\..\src\mailbox.cpp:84)
+Assertion failed: nbytes == sizeof (dummy) (..\..\..\src\signaler.cpp:219)
+
+<https://github.com/zeromq/libzmq/issues/1930>
+
+
+
+
+
