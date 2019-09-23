@@ -165,3 +165,6 @@ ping 10.10.2.17
 作用：查看用户是否存在
 [root@cnszaibt01 ~]# id tomcat
 uid=502(tomcat) gid=502(tomcat) groups=502(tomcat)
+
+25. 修改服务器名称
+hostnamectl set-hostname gts-cloud-server
