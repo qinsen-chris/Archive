@@ -160,13 +160,30 @@ centos默认安装了mariadb，因此，在安装mysql之前，需要卸载系�
 
 安装完成后，在/var/log/mysqld.log 下查看，root用户初始密码， 登录后修改root密码。
 
+
+
+2、docker 安装mysql 
+
+<https://www.runoob.com/docker/docker-install-mysql.html>
+
+
+
 ### 用户权限设置问题
+
+
+
+set password for root@localhost = password('123456');  #本地登录密码
+
+set password for root@'%' = password('123456');        #远程登录密码
+
+
+
 创建普通用户：
 CREATE USER qinsen@localhost IDENTIFIED BY 'QSpassword';
 Delete FROM user Where User='qinsen' and Host='localhost';
 
 ###创建用户，并赋予所有权限
-grant all privileges on *.* to qinsen@'%' identified by 'QSpassword' ;
+grant all privileges on  *.*  to qinsen@'%' identified by 'QSpassword' ;
 flush privileges;
 
  

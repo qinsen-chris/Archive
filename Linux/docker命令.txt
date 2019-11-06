@@ -1,4 +1,4 @@
-用docker部署的服务：guoxinsuo marketing xxl mysql redis mongodb
+﻿用docker部署的服务：guoxinsuo marketing xxl mysql redis mongodb
 
 
 说明： 
@@ -45,7 +45,7 @@ docker version
 docker search mysql
 
 #拉取镜像 版本为5.7
-docker pull mysql:5.7
+docker pull mysql:5.6
 
 #查看镜像
 docker images 
@@ -101,6 +101,58 @@ docker cp 宿主目录/文件  id:容器目录
 docker cp 容器名:容器里面的路径  宿主机的相应路径 
 
 
+
+----------------------docker 安装
+1
+ sudo yum remove docker \
+ docker-client \
+ docker-client-latest \
+ docker-common \
+ docker-latest \
+ docker-latest-logrotate \
+ docker-logrotate \
+ docker-engine
+ 
+ 2
+ sudo yum install -y yum-utils \
+ device-mapper-persistent-data \
+ lvm2
+ 
+ 3
+ sudo yum-config-manager \
+ --add-repo \
+ https://download.docker.com/linux/centos/docker-ce.repo
+ 
+ 4
+ yum install docker-ce docker-ce-cli containerd.io
+ 
+ 5、启动Docker。
+  systemctl start docker
+ 
+ 6、验证
+ docker -v
+ 
+ 
+----------------------安装mysql:
+  
+  1、拉取镜像
+	docker pull mysql:5.7
+  
+  2、运行mysql镜像
+	docker run -p 3306:3306 --name mymysql -v $PWD/conf:/etc/mysql/conf.d -v $PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+  
+  3、进入mysql容器
+	docker exec -it mymysql mysql -u root -p
+  
+  4、修改用户密码
+	set password for root@localhost = password('123456');  #本地登录密码
+	set password for root@'%' = password('123456');        #远程登录密码
+	
+	CREATE USER qinsen@localhost IDENTIFIED BY 'QSpassword';
+	Delete FROM user Where User='qinsen' and Host='localhost';
+
+	grant all privileges on  *.*  to qinsen@'%' identified by 'QSpassword' ;
+	flush privileges;
 
 
 
