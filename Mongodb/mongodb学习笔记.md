@@ -22,6 +22,7 @@ db.getCollection('userquota').find({quotaTreePropertys:[100001,100002]})
 # 查询quotaID、quotaType都相等的document
 db.getCollection('userquota').find({"quotaProperty":{$elemMatch :{"quotaID":100001,"quotaType":1}}})
 db.getCollection('userquota').find({"quotaProperty.quotaID":100001,"quotaProperty.quotaType":1})
+
 # 查询 in 
 db.getCollection('userquota').find({"quotaProperty.quotaID":{$in:[100001,100002]}})
 
@@ -31,6 +32,7 @@ db.userquota.update({"userId":1002},{$addToSet:{"quotaProperty":
     "catalogueID":0,
     "quotaName":"ceshi1","quotaType":2,"quotaExplain":"shuoming2","quotaFun":"13123123"}
     }})
+
 # 更新数组内的子集   
 db.userquota.update({"userId":1003,"quotaproperty.quotaID":100001},{$set:{"quotaproperty.$.quotaName":"ceshi11111"}})
 
@@ -58,7 +60,13 @@ db.getCollection('usertemplate').update(
 )
 
 # 更新多层数组内的属性，用下标
-db.userquota.update({"userId":"1","quotaTreePropertys.catalogueID":"0"},{$set:{"quotaTreePropertys.$.propertys.0.quotaName":"new"}})
+db.userquota.update(
+
+{"userId":"1","quotaTreePropertys.catalogueID":"0"},
+
+{$set:{"quotaTreePropertys.$.propertys.0.quotaName":"new"}}
+
+)
 
 # 删除整个文档
 db.userquota.deleteOne({"userId":1003},{$pull:{"quotaProperty":{"quotaID":100002}}})
@@ -90,13 +98,13 @@ db.userquota.aggregate([
 
 ])
 
-
 #查询数组长度，如果为空，加入ifNull判断
 db.usertemplate.aggregate([
             {"$project":{"userId":1,"qsize":{"$size":{ "$ifNull":["$templates",[]]}},_id:0}}
         ])
 		
 		
+
 # 去重
 db.userquota.distinct("quotaProperty.quotaID")
 
@@ -110,6 +118,7 @@ db.userquota.update(
    },
    { upsert: false }
 );
+
 # 批量删除 $each
 
 
@@ -122,6 +131,7 @@ db.getCollection('usersector').update(
     }
 )
     
+
 # /**批量删除数组数据 */
 内嵌数组是字符串：
 
@@ -160,6 +170,7 @@ db.userquota.update(
         ]
     }
 )
+
 # 多层嵌套数组插入， 插入第四层，则前面三级目录要传值 
 ```java
 db.userquota.update(
@@ -270,3 +281,49 @@ db.eval('cronDeleteQuota(0,10,5)')
             }
         });
 ```
+
+
+
+
+
+
+
+docker 安装mongodb
+
+1、docker pull mongo:4.0
+
+2、docker run -idt -p 27017:27017 --name mongodb -v /home/mongo/db:/data/db -v /home/mongo/configdb:/data/configdb mongo:4.0 --auth
+
+3、docker exec -it mongodb mongo admin
+
+4、db.createUser({ user: 'root', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
+
+5、db.auth('root', '123456')
+
+6、exit    
+
+7、mongo --port 27017 -u root -p 123456 --authenticationDatabase admin （以刚建立的用户登录数据库 创建test用户）
+
+8、use test  
+
+9、创建 用户、密码和数据库：
+db.createUser({ user: 'qinsen', pwd: 'QSpassword', roles: [ { role: "dbOwner", db: "test" } ] });
+
+
+
+
+
+删除用户
+
+db.dropUser(“qinsen”)
+
+删除数据库
+
+
+
+
+
+操作数据库 
+
+mongo
+

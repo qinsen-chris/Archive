@@ -1,6 +1,4 @@
-﻿用docker部署的服务：guoxinsuo marketing xxl mysql redis mongodb
-
-
+﻿
 说明： 
 一般用 bash 命令进入的容器，提示符会变成root用户的，如 [root@ee8ba7680333 /]#
 一般用 sh 命令进入容器，提示符可能不会带用户，可能情况：sh-4.1#、#
@@ -39,6 +37,12 @@ docker ps|grep mysql
 ----------------------------study------------------------------
 http://www.manongjc.com/article/33389.html
 
+#清理docker环境 
+docker ps -q | xargs docker stop | xargs docker rm
+
+#查看容器详情
+docker inspect
+
 #查看版本
 docker version
 #查找镜像
@@ -73,10 +77,6 @@ docker rm 容器id
 
 #启动一个做了端口映射的容器 先stop容器。 主机端口:容器内部端口 \imageName为镜像名称
 docker run -d -p 8888:8080 imageName
-
-#linux防火墙
-service firewalld status 查看防火墙状态
-service firewalld stop   关闭防火墙
 
 #查看容器日志
 docker logs containerName/容器id
@@ -113,6 +113,13 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
  docker-logrotate \
  docker-engine
  
+ 
+ （ yum remove docker-ce 
+    rm -rf /var/lib/docker
+	检查 rpm -qa | grep docker
+	docker remove xxxx
+  ）
+ 
  2
  sudo yum install -y yum-utils \
  device-mapper-persistent-data \
@@ -132,8 +139,11 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
  6、验证
  docker -v
  
+ 自动补齐：
+ yum install bash-completion
  
 ----------------------安装mysql:
+  cat  /etc/redhat-release   //查看系统版本
   
   1、拉取镜像
 	docker pull mysql:5.7
@@ -153,7 +163,3 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
 
 	grant all privileges on  *.*  to qinsen@'%' identified by 'QSpassword' ;
 	flush privileges;
-
-
-
-

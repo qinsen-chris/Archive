@@ -42,6 +42,29 @@ yum history
 
 yum history info 9 
 
+
+
+ # 端口情况：
+
+#linux防火墙
+service firewalld status 查看防火墙状态
+service firewalld stop   关闭防火墙
+
+查看端口号占用情况
+lsof -i:端口号
+
+netstat -tunlp用于显示tcp，udp的端口和进程等相关情况，如下图
+命令里的t,u,n,l,p均有不同含义：
+-t  仅显示和tcp相关的
+-u 仅显示和udp相关的
+-n 不限时别名，能显示数字的全部转换为数字
+-l   仅显示出于Listen(监听)状态的
+-p  显示建立这些连接的程序名
+
+netstat -tunlp | grep 80
+
+
+
 # 安装
 
 --------------------**etc/profile**--------------------
@@ -116,6 +139,81 @@ export JAVA_HOME PATH CLASSPATH
  
 
 source /etc/profile
+
+
+
+## 安装nginx
+
+1、正常安装
+
+<https://www.jianshu.com/p/9f2c162ac77c>
+
+包 /home
+
+安装路径、配置
+
+/usr/local/nginx/conf/nginx.conf
+
+启动路径
+
+ 
+
+2、docker安装
+
+<https://www.runoob.com/docker/docker-install-nginx.html>
+
+运行：
+
+docker run --name mynginx  -p 80:80 -v /root/nginx/html:/usr/share/nginx/html -d nginx
+
+
+
+容器内安装vi:
+
+```
+apt-get update
+apt-get install vim
+```
+
+反向代理：
+
+```
+配置文件路径：/etc/nginx/conf.d
+
+proxy_pass 101.132.74.107:9001     
+
+注意：这里的ip的地址不能用公网ip， 要使用内网ip
+nginx -t 检查配置文件是否正确
+nginx -s reload 命令重启让配置文件生效
+```
+
+
+
+```
+nginx upstream 配置和作用
+
+upstream backend {
+  ``server backend1.example.com    weight=5;
+  ``server backend2.example.com:8080;
+  ``server unix:``/tmp/backend3``;
+    ``server backup1.example.com:8080  backup;
+  ``server backup2.example.com:8080  backup;
+}
+
+server {
+  ``location / {
+    ``proxy_pass http:``//backend``;
+  ``}
+}
+
+定义一组服务器。 这些服务器可以监听不同的端口。 而且，监听在TCP和UNIX域套接字的服务器可以混用。
+```
+
+ 
+
+
+
+
 
 ## 2安装tomcat
 
