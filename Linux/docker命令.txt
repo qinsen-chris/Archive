@@ -1,38 +1,35 @@
-﻿
-说明： 
-一般用 bash 命令进入的容器，提示符会变成root用户的，如 [root@ee8ba7680333 /]#
-一般用 sh 命令进入容器，提示符可能不会带用户，可能情况：sh-4.1#、#
-容器是一个简化版的系统环境，只有比较基础的命令，cd vi mv cp等，默认是没有vim命令的
+﻿----------------------------network------------------------------
+查看容器路由： route -n   
+linux内核数据包转发是否开启：/proc/sys/net/ipv4/ip_forward  
+iptables -t nat -L -n 
+抓包 ： tcpdump -i any -n icmp 
+容器ip:  docker exec name ip addr
 
-2. 从容器里退出的命令:
-exit
+容器间通讯：
+		ip1 : 192.168.1.164
+		docker1   
 
-3. 不进入容器的方式执行容器里的命令
-docker exec -it container_name cmd
-其中cmd为要执行的命令，此命令在容器中必须存在
+		ip2 : 192.168.3.19
+		docker2 
 
-实例：
-docker exec -it guoxinsuo_hf ls
+		机器1上
+		ifconfig   inet 172.12.0.1
+		机器2上
+		ifconfig   inet 10.2.13.1
+		配置机器2上的路由规则：
+		route add -net 172.12.0.0 netmask 255.255.255.0 gw 192.168.1.164
 
-4. 重启容器的命令：
-docker restart container_name
-成功后命令行会返回容器的名字。
+		配置机器1上的路由规则：
+		route add -net 10.2.13.0 netmask 255.255.255.0 gw 192.168.3.19
 
-实例：重启汇付环境的服务
-docker restart guoxinsuo_hf
-
-重启包含了停止和启动
-docker stop container_name
-docker start container_name
-
-5. 查看所有正在运行的容器：
-docker ps
-
-如果运行容器太多，可用grep过滤
-docker ps|grep guoxinsuo
-docker ps|grep mysql
-
-
+		查看容器路由： route -n 
+		
+		ping 
+		
+		查看网络是否通：
+		docker exec name1 ping 10.2.13.1
+		
+		抓包 ： tcpdump -n -i any icmp 
 
 ----------------------------study------------------------------
 http://www.manongjc.com/article/33389.html
@@ -129,6 +126,9 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
  sudo yum-config-manager \
  --add-repo \
  https://download.docker.com/linux/centos/docker-ce.repo
+ 
+ 或者：
+ sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
  
  4
  yum install docker-ce docker-ce-cli containerd.io

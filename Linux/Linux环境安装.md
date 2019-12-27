@@ -44,11 +44,39 @@ yum history info 9
 
 
 
- # 端口情况：
+修改root密码：
+
+sudo passwd root
+
+
+
+内网跳转登录
+
+ssh root@192.168.2.21 
+
+
+
+更新系统当前时间：
+
+ntpdate time.windows.com
+
+
+
+
+
+ # 端口和防火墙情况：
 
 #linux防火墙
 service firewalld status 查看防火墙状态
-service firewalld stop   关闭防火墙
+service firewalld stop   关闭防火墙  
+
+//关闭防火墙
+
+systemctl stop firewalld
+
+//关闭开机自动启动
+
+systemctl disable firewalld 
 
 查看端口号占用情况
 lsof -i:端口号
@@ -82,6 +110,10 @@ export MAVEN_HOME=/usr/local/maven
 export PATH=$PATH:$MAVEN_HOME/bin
 
  
+
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin:$MAVEN_HOME/bin:$GRADLE_HOME/bin:$PLAY_HOME/play
+
+
 
 (2)让/etc/profile文件修改后立即生效，有两种方法：
 
@@ -155,6 +187,37 @@ source /etc/profile
 /usr/local/nginx/conf/nginx.conf
 
 启动路径
+
+
+
+```bash
+官网下载：http://nginx.org/en/download.html
+或者直接在linux执行命令：wget http://nginx.org/download/nginx-1.12.2.tar.gz
+这里下载的版本是1.12.2
+
+# 安装依赖
+yum -y install gcc zlib zlib-devel pcre-devel openssl openssl-devel
+# 解压缩
+tar -zxvf linux-nginx-1.12.2.tar.gz
+cd nginx-1.12.2/
+# 执行配置
+./configure
+# 编译安装(默认安装在/usr/local/nginx)
+make
+make install
+
+
+Nginx常用命令
+测试配置文件：${Nginx}/sbin/nginx -t
+启动命令：${Nginx}/sbin/nginx
+检查配置文件：${Nginx}/sbinnginx -t 
+
+停止命令：${Nginx}/sbin/nginx -s stop/quit
+重启命令：${Nginx}/sbin/nginx -s reload
+查看进程命令：ps -ef | grep nginx
+平滑重启：kill -HUP [Nginx主进程号(即ps命令查到的PID)]
+
+```
 
  
 
@@ -290,6 +353,12 @@ flush privileges;
 即MEDIUM，所以刚开始设置的密码必须符合长度，且必须含有数字，小写或大写字母，特殊字符。
 mysql> set global validate_password_policy=0;  //默认是1，
 mysql> set global validate_password_length=1;  // 默认是 8
+
+
+
+执行sql文件：
+
+source  ./target/xxx.sql
 
  
 

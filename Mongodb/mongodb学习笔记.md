@@ -288,30 +288,63 @@ db.eval('cronDeleteQuota(0,10,5)')
 
 
 
-docker 安装mongodb
+docker 安装mongodb 创建用户和数据库
+
+------------------------------------------------
 
 1、docker pull mongo:4.0
 
-2、docker run -idt -p 27017:27017 --name mongodb -v /home/mongo/db:/data/db -v /home/mongo/configdb:/data/configdb mongo:4.0 --auth
+2、docker run -idt -p 27017:27017 --name mongodb -v /home/mongo/db:/data/db -v /home/mongo/configdb:/data/configdb mongo:4.0
 
-3、docker exec -it mongodb mongo admin
+3、docker exec -it 镜像id /bin/bash （进入容器）
 
-4、db.createUser({ user: 'root', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
+4、mongo （进入mongodb）
 
-5、db.auth('root', '123456')
+5、use admin
 
-6、exit    
+db.createUser(
+{
+user: "admin",
+pwd: "123456",
+roles: [ { role: "root", db: "admin" } ]
+}
+);
 
-7、mongo --port 27017 -u root -p 123456 --authenticationDatabase admin （以刚建立的用户登录数据库 创建test用户）
+6、exit; 
 
-8、use test  
+7、mongo --port 27017 -u admin -p 123456 --authenticationDatabase admin
 
-9、创建 用户、密码和数据库：
-db.createUser({ user: 'qinsen', pwd: 'QSpassword', roles: [ { role: "dbOwner", db: "test" } ] });
+8、use user_data
 
+db.createUser(
+{
+user: "gangtise",
+pwd: "abcd1234",
+roles: [
+{ role: "readWrite", db: "user_data" }
+]
+}
+);
 
+exit
 
+9、重复上诉步骤 
 
+mongo --port 27017 -u admin -p 123456 --authenticationDatabase admin
+
+use user_data
+
+db.createUser(
+{
+user: "gangtise",
+pwd: "abcd1234",
+roles: [
+{ role: "readWrite", db: "user_data" }
+]
+}
+);
+
+-----------------------------------------------------
 
 删除用户
 
@@ -320,10 +353,4 @@ db.dropUser(“qinsen”)
 删除数据库
 
 
-
-
-
-操作数据库 
-
-mongo
 
