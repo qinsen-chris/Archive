@@ -310,7 +310,7 @@ $  kubectl describe secrets -n kube-system $(kubectl -n kube-system get secret |
 
 步骤：1制作镜像 - > 2控制器管理Pod - > 3暴露应用 - > 4对外发布应用 - > 5日志/监控
 
-1、制作镜像
+## 1、制作镜像
 
 服务器中有源码的话，要使用maven打包，需要安装jdk和maven：
 
@@ -384,7 +384,7 @@ TCP socket : Engine API URL 为
 
 
 
-2、控制器管理Pod
+## 2、控制器管理Pod
 
 选择Deployment：无状态应用部署
 
@@ -426,7 +426,7 @@ kubectl logs podname
 
 
 
-3、暴露应用
+## 3、暴露应用
 
 kubectl expose 创建一个service:
 
@@ -439,6 +439,10 @@ kubectl expose deployment java-demo --port=80 --target-port=8080 --type=NodePort
 --target-port=8080 ：容器内容应用端口
 
 --type=NodePort  ：k8s随机生成端口，集群外部访问端口
+
+--name  不指定，则与应用同名
+
+ java-demo ： 应用的名称，为哪个应用暴露服务。 可以使用 kubectl get deploy 来查看。
 
 
 
@@ -483,4 +487,84 @@ kubectl apply -f service.yaml
 查看pods和service:
 
 kubectl get pods,svc
+
+
+
+## 4、升级与回滚
+
+### 4.1 创建
+
+kubectl create deployment web --image=nginx:1.14
+
+kubectl get deploy,pods
+
+
+
+### 4.2 发布
+
+kubectl expose deployment web --port=80 --type=NodePort --target-port=80 --name=web
+
+kubectl get service
+
+
+
+### 4.3 升级
+
+kubectl set image deployment/web nginx=nginx:1.15
+
+
+
+#修改端口：
+
+kubectl edit svc/web 
+
+#查看 kubectl get svc
+
+#查看升级状态
+
+kubectl rollout status deployment/nginx-deployment
+
+
+
+kubectl get deployment ：会重新起Replicaset，杀掉一个pod,重启一个pod。 进行滚动更新
+
+### 4.4 回滚
+
+#查看升级记录
+
+kubectl rollout history deployment/web  
+
+#回滚到上一个版本
+
+kubectl rollout undo deployment/web  
+
+ #指定回滚到的版本
+
+kubectl rollout undo deployment/web --revision=2 
+
+
+
+### 4.5 删除
+
+kubectl delete deploy/web
+
+kubectl delete svc/web
+
+
+
+### 4.6 扩容：
+
+kubectl scale --help
+
+kubectl scale deployment web --replicas=5
+
+缩容：
+
+kubectl scale deployment web --replicas=3
+
+查看：
+
+kubectl get pods
+
+
 

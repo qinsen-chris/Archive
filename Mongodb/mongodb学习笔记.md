@@ -1,4 +1,107 @@
+userquota:
+{
+    "userId": "1001",
+    "updateTime":  ISODate("2019-05-05T12:30:00.902Z"),
+    "quotaTree":
+    [
+        {
+            "catalogueID": "1000000011",
+            "catalogueName": "我的指标1",
+            "subCatalogue":[]
+        },
+        {
+            "catalogueID": "1000000020",
+            "catalogueName": "我的指标2",
+            "subCatalogue":
+            [
+                {
+                    "catalogueID": "1000000021",
+                    "catalogueName": "我的指标21",
+					"subCatalogue" : [ 
+                        {
+                            "catalogueID" : "100000000211",
+                            "catalogueName" : "我的指标211",
+							"subCatalogue":
+							[
+								{
+									"catalogueID": "100000002111",
+									"catalogueName": "我的指标2111"
+								},
+								{
+									"catalogueID": "100000002112",
+									"catalogueName": "我的指标2112"
+								},
+								{
+									"catalogueID": "100000002213",
+									"catalogueName": "我的指标2213"
+								}
+							]
+                        }, 
+                        {
+                            "catalogueID" : "100000000212",
+                            "catalogueName" : "我的指标212"
+                        }
+                    ]
+                },
+                {
+                    "catalogueID": "1000000022",
+                    "catalogueName": "我的指标23"
+                },
+                {
+                    "catalogueID": "1000000022",
+                    "catalogueName": "我的指标22"
+                }
+            ]
+        }
+    ],
+	"quotaTreePropertys":[
+		{
+			"catalogueID": "0",
+			"propertys":[
+				{"quotaID":"100001","quotaName": "涨跌幅"},
+				{"quotaID":"100002","quotaName": "换手率"}
+			]
+		},
+		{
+			"catalogueID": "1000000020",
+			"propertys":[
+				{"quotaID":"100001","quotaName": "涨跌幅"},
+				{"quotaID":"100003","quotaName": "成交量"}
+			]
+		}
+	],
+    "quotaProperty":
+    [
+        {
+	        "quotaID": "100001",
+	        "quotaName": "涨跌幅",
+	        "quotaType": 1,   
+	        "quotaExplain": "指标说明1",
+	        "quotaFun": "{}" 			
+        },
+        {
+            "quotaID": "100002",
+            "quotaName": "换手率",
+	        "quotaType": 2,   
+	        "quotaExplain": "指标说明2",
+	        "quotaFun": "{}"  			
+        },
+        {
+            "quotaID": "100003",
+            "quotaName": "成交量",
+	        "quotaType": 2,   
+	        "quotaExplain": "指标说明3",
+	        "quotaFun": "{}"  			
+        }
+    ]
+}
+
+
+
+
+
 # 查看db状态
+
 db.serverStatus()
 # 恢复数据库
 db.repairDatabase()
@@ -88,22 +191,180 @@ db.userquota.aggregate([
 ])
 
 #  返回指定字段要与javabean中字段对应，否则数据无法显示
-db.userquota.aggregate([
-
+    db.userquota.aggregate([
     {"$unwind":"$quotaProperty" },
-    
     {"$match":{"quotaProperty.quotaID":"100003","userId":"1003"}},
-    
     {"$project":{"quotaProperty.quotaID":1,"quotaProperty.quotaName":1,"quotaProperty.quotaType":1,"quotaProperty.quotaExplain":1,"quotaProperty.quotaFun":1,_id:0}}
+    ])
 
-])
+
 
 #查询数组长度，如果为空，加入ifNull判断
 db.usertemplate.aggregate([
             {"$project":{"userId":1,"qsize":{"$size":{ "$ifNull":["$templates",[]]}},_id:0}}
         ])
-		
-		
+
+
+
+#模糊查询数组中的数据
+
+db.chartdrawline.aggregate([
+    {"$match":{"userid":"10001","key":"600000.sh_month"}},
+    {"$unwind":"$line" },
+    {"$project":{"line.lineid":1,"line.linedata":1,"line.name":1,_id:0}},
+    {"$match":{"line.name":{"$regex":"33"}}}
+])
+
+
+
+
+
+
+
+
+
+
+    userdataByID:
+    {
+    "_id" : ObjectId("5e15402191283ffd81481d7a"),
+    "userid" : "10001",
+    "updateTime" : ISODate("2020-01-09T10:42:41.673+08:00"),
+    "tree" : [ 
+        {
+            "treename" : "drawline",
+            "treenode" : [ 
+                {
+                    "nodeid" : "1713297425085403136",
+                    "nodename" : "",
+                    "desc" : "",
+                    "subnode" : [ 
+                        {
+                            "nodeid" : "1",
+                            "nodename" : "fffff",
+                            "desc" : "",
+                            "subnode" : [ 
+                                {
+                                    "nodeid" : "233",
+                                    "nodename" : "",
+                                    "desc" : "",
+                                    "subnode" : [ 
+                                        {
+                                            "nodeid" : "111",
+                                            "nodename" : "aaa",
+                                            "desc" : "",
+                                            "subnode" : [ 
+                                                {
+                                                    "nodeid" : "233",
+                                                    "nodename" : "",
+                                                    "desc" : "",
+                                                    "subnode" : []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }, 
+                        {
+                            "nodeid" : "11",
+                            "nodename" : "test",
+                            "desc" : "test"
+                        }, 
+                        {
+                            "nodeid" : "22",
+                            "nodename" : "test22",
+                            "desc" : "test22"
+                        }
+                    ]
+                }, 
+                {
+                    "nodeid" : "1713297425085403137",
+                    "nodename" : "",
+                    "desc" : "",
+                    "subnode" : []
+                }, 
+                {
+                    "nodeid" : "11",
+                    "nodename" : "test",
+                    "desc" : "test",
+                    "subnode" : [ 
+                        {
+                            "nodeid" : "22",
+                            "nodename" : "test22",
+                            "desc" : "test22"
+                        }
+                    ]
+                }
+            ],
+            "treedata" : [ 
+                {
+                    "nodeid" : "1713297425085403136",
+                    "nodedata" : {
+                        "id" : "1",
+                        "name" : "1"
+                    }
+                }, 
+                {
+                    "nodeid" : "1713297425085403137",
+                    "nodedata" : {
+                        "id" : "2",
+                        "name" : "2"
+                    }
+                }, 
+                {
+                    "nodeid" : "1713297425085403137",
+                    "nodedata" : {
+                        "id" : "3",
+                        "name" : "3"
+                    }
+                }, 
+                {
+                    "nodeid" : "1713297425085403139",
+                    "nodedata" : {
+                        "id" : "4",
+                        "name" : "4"
+                    }
+                }
+            ]
+        }, 
+        {
+            "treename" : "userindex",
+            "treenode" : [ 
+                {
+                    "nodeid" : "1713297425085403136",
+                    "nodename" : "",
+                    "desc" : "",
+                    "subnode" : []
+                }
+            ],
+            "treedata" : [ 
+                {
+                    "nodeid" : "1713297425085403136",
+                    "nodecontent" : {}
+                }
+            ]
+        }
+     ]
+    }
+
+
+
+
+    树嵌套：
+    
+    db.getCollection('userdataByID').aggregate([
+    	{"$match":{"userid":"10001"}},
+    	{"$unwind":"$tree" },
+    
+    	{"$match":{"tree.treename":"drawline"}},
+    	{"$unwind":"$tree.treedata" },
+    	{"$project":{"tree.treedata":1}},
+    	
+    	{"$match":{"tree.treedata.nodeid":"1713297425085403137"}  }
+    ])	
+
+
+​		
 
 # 去重
 db.userquota.distinct("quotaProperty.quotaID")
@@ -352,5 +613,8 @@ db.dropUser(“qinsen”)
 
 删除数据库
 
+
+
+--------------------------------------------------------------------------------
 
 

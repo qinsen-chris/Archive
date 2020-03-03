@@ -92,7 +92,7 @@ es笔记：
 ​	 * mustNot(QueryBuilders): NOT
 ​	 * should:               : OR 
 ​	 
-	 两种分词器使用的最佳实践是：索引时用ik_max_word，在搜索时用ik_smart。
+​	 两种分词器使用的最佳实践是：索引时用ik_max_word，在搜索时用ik_smart。
 
 
 ​	  
@@ -100,8 +100,8 @@ es笔记：
 ​	  "field": {  
 ​	     "type":  "text", //文本类型  
 ​	     
-	     "index": "analyzed"//分词，不分词是：not_analyzed ，设置成false，字段将不会被索引  
-	     
+​	     "index": "analyzed"//分词，不分词是：not_analyzed ，设置成false，字段将不会被索引  
+​	     
 	     "analyzer":"ik"//指定分词器  
 	     
 	     "boost":1.23//字段级别的分数加权  
@@ -132,3 +132,47 @@ es笔记：
 	     
 	     "term_vector":"no"//默认不存储向量信息，支持参数yes（term存储），with_positions（term+位置）,with_offsets（term+偏移量），with_positions_offsets(term+位置+偏移量) 对快速高亮fast vector highlighter能提升性能，但开启又会加大索引体积，不适合大数据量用  
 	   }  
+
+
+
+
+	 * 使用QueryBuilder
+	 
+	 * termQuery("key", obj) 完全匹配
+	 * termsQuery("key", obj1, obj2..)   一次匹配多个值
+	 * matchQuery("key", Obj) 单个匹配, field不支持通配符, 前缀具高级特性
+	 * multiMatchQuery("text", "field1", "field2"..);  匹配多个字段, field有通配符忒行
+	 * matchAllQuery();         匹配所有文件
+	 
+	 * must(QueryBuilders) :   AND
+	 * mustNot(QueryBuilders): NOT
+	 * should:                  : OR
+
+
+​	
+​	  
+​	 matchAllQuery()方法用来匹配全部文档
+​	 matchQuery("filedname","value")匹配单个字段，匹配字段名为filedname,值为value的文档
+​	 multiMatchQuery(Object text, String... fieldNames)  多个字段匹配某一个值
+​	 wildcardQuery()模糊查询   查询，?匹配单个字符，*匹配多个字符
+​	 BoolQueryBuilder  进行复合查询
+​	 通过from和size参数进行分页。From定义查询结果开始位置，size定义返回的hits（一条hit对应一条记录）最大数量。
+​		 
+
+	两种分词器使用的最佳实践是：索引时用ik_max_word，在搜索时用ik_smart。
+
+
+main.dic	 
+extra_main.dic
+extra_single_word.dic
+extra_single_word_full.dic
+
+ES服务器配置修改：
+	extra_stopword.dic
+	stopword.dic	
+
+	<entry key="main.dic;extra_main.dic;extra_single_word.dic;extra_single_word_full.dic"></entry>
+	<entry key="ext_stopwords.dic;stopword.dic"></entry>
+
+
+查看分词效果：http://192.168.1.15:9200/keysearch/secumain/308041741206/_termvectors?fields=secuCode
