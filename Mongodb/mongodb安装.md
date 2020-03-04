@@ -227,6 +227,16 @@ rs.add({"_id":3,"host":"10.0.2.28:27017"})
 
 
 
+9、进入副本节点
+
+解决"errmsg" : "not master and slaveOk=false"
+
+rs.slaveOk();
+
+副本节点可读
+
+
+
 ----------备注-----------------
 
 Replica Set
@@ -241,6 +251,16 @@ Replica Set
 
 
 
+------------------修改配置---------------：
+
+先查看 rs.config();
+
+执行（修改节点host）
+
+var config=rs.config(); config.members[0].host="100.100.100.100:27017"; rs.reconfig(config);
+
+
+
 ## 四、springboot- mongo配置：
 
 spring:              
@@ -249,6 +269,16 @@ spring:
         mongodb:
           #uri: mongodb://gangtise:123456@192.168.1.61:27017/user_data
           uri: mongodb://gangtise:abcd1234@192.168.1.15:27017,192.168.1.68:27017/user_data
+
+
+
+uri: mongodb://gangtise:abcd1234@192.168.1.15:27017,192.168.1.68:27017/user_data?connect=replicaSet&slaveOk=true&replicaSet=副本及名称
+
+
+
+其中：slaveOk=true ： 开启副本节点的读功能，可实现读写分离
+
+connect=replicaSet ： 自动到副本集中选择读写的主机。 如果slaveOk是打开的，则实现了读写分离。
 
 
 
@@ -309,7 +339,7 @@ mongoimport -h X.X.X.X:10000 -d news_novel --colleciton Chapter_news --file Chap
 
 
 
-----------------docker
+----------------docker 数据导出
 
 将docker mongodb的数据导出到真机中
 

@@ -112,7 +112,9 @@ show dbs
 db.userquota.createIndex( { "quotaTree.catalogueName": "text"} )
 db.userquota.find( { $text: { $search: "我的指标111" } } )
 
-# 单字段索引索引 1升序 -1降序 
+# 单字段索引 1升序 -1降序 
+#创建索引
+
 db.userquota.createIndex( { updatetime: 1 } )
 #查询索引
 db.userquota.getIndexes()
@@ -121,6 +123,24 @@ db.userquota.dropIndex("userId_-1")
 
 db.getCollection('userquota').find({})
 db.getCollection('userquota').find({quotaTreePropertys:[100001,100002]})
+
+#查看执行计划
+
+db.getCollection('userquota').find({quotaTreePropertys:[100001,100002]}).explain()
+
+
+
+索引的涵盖查询： 如果查询的字段只有索引字段， 折直接从索引的集合中返回，不再从文档中抓取
+
+
+
+## JAVA对应的索引注解
+
+单字段索引直接在字段上加 @Indexed
+
+符合索引在类上添加 @CompoundIndex(def="{'userid': 1,'nickname': -1}")
+
+
 
 # 查询quotaID、quotaType都相等的document
 db.getCollection('userquota').find({"quotaProperty":{$elemMatch :{"quotaID":100001,"quotaType":1}}})
