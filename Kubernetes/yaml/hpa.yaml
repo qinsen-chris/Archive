@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ms-gts  
+  namespace: default #k8s命名空间
+spec:
+  maxReplicas: 6  # 最大副本数
+  minReplicas: 3   # 最小副本数
+  scaleTargetRef:   
+    apiVersion: apps/v1
+    kind: Deployment  
+    name: gangtise-auth-service   # 监控名为ms-wechat的Deployment
+  targetCPUUtilizationPercentage: 50  # cpu 阈值

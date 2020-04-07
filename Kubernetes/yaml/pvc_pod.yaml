@@ -1,0 +1,17 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: myfrontend
+      image: dockerfile/nginx
+      volumeMounts:
+      - name: nfsk8s
+        mountPath: /export/home/log
+        subPath: podname
+        
+  volumes:
+    - name: nfsk8s
+      persistentVolumeClaim:
+        claimName: nfsk8s

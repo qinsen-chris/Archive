@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfsk8s
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 50Gi
+  selector: 
+    matchLabels:
+      type: nfs

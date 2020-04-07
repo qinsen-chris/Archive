@@ -1,4 +1,4 @@
- # 查看命令
+查看命令
 
 ----查看linux系统信息------------- --
 
@@ -8,15 +8,11 @@ uname -sr \ -n -m
 
 ls -alR --full-time * | grep "2015-12-25"| grep ".java"
 
- 
-
 ss -ntl   
 
 ----查找以前是否安装有mysql，使用下面命令------------- --
 
-rpm -qa|grep -i mysql   
-
- 
+rpm -qa|grep -i mysql    
 
 ----tar------------- --
 
@@ -33,8 +29,6 @@ df -lh
 df --help   
 
 du --help
-
- 
 
 -------查看yum安装包信息----
 
@@ -61,8 +55,6 @@ ssh root@192.168.2.21
 ntpdate time.windows.com
 
 
-
-java -jar -server -Xms960m -Xmx960m -XX:CompressedClassSpaceSize=128m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m gts-keyboard-search-0.0.1-SNAPSHOT.jar
 
  # 端口和防火墙情况：
 
@@ -274,10 +266,6 @@ server {
 
  
 
-
-
-
-
 ## 2安装tomcat
 
 Version:8.5
@@ -331,8 +319,6 @@ centos默认安装了mariadb，因此，在安装mysql之前，需要卸载系�
 
 ### 用户权限设置问题
 
-
-
 set password for root@localhost = password('123456');  #本地登录密码
 
 set password for root@'%' = password('123456');        #远程登录密码
@@ -378,6 +364,24 @@ default-time-zone = '+8:00'
 这一行，然后保存退出，重新启动。
 service mysqld restart
 
+
+
+### mysql查看当前实时连接数
+静态查看:
+SHOW PROCESSLIST;  
+SHOW FULL PROCESSLIST;  
+SHOW VARIABLES LIKE '%max_connections%';  
+SHOW STATUS LIKE '%Connection%';  
+实时查看:
+show status like 'Threads%';
+这是是查询数据库当前设置的最大连接数  
+mysql> show variables like '%max_connections%';  
+
+可以在/etc/my.cnf里面设置数据库的最大连接数  
+max_connections = 1000  
+
+
+
 ## 5安装tcl  8.6.1  
 
 在redis之前安装
@@ -416,8 +420,6 @@ Version:3.5.2
 
  
 
- 
-
 ## 8 安装gradle
 
 V4.7
@@ -438,9 +440,7 @@ activemq status
 
 http://58.213.91.96:29009/admin/
 
- 
-
- 
+  
 
 # 下载项目:
 
@@ -616,4 +616,255 @@ export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin:$MAVEN_HOME/bin:$GRADLE_HOME/bin
 
  
 
- 
+ ## 安装gitlab
+
+1、docker pull gitlab/gitlab-ce
+
+2、本机准备目录
+
+```kotlin
+mkdir -p /home/gitlab/config   创建config目录
+mkdir -p /home/gitlab/logs    创建logs目录
+mkdir -p /home/gitlab/data    创建data目录
+```
+
+3、运行脚本启动GitLab
+
+```
+docker run -d -p 8443:443 -p 8090:80 --name gitlab --restart unless-stopped -v /home/gitlab/config:/etc/gitlab -v /home/gitlab/logs:/var/log/gitlab -v /home/gitlab/data:/var/opt/gitlab gitlab/gitlab-ce
+```
+
+-d：后台运行
+
+-p：将容器内部端口向外映射
+
+--name：命名容器名称
+
+-v：将容器内数据文件夹或者日志、配置等文件夹挂载到宿主机指定目录
+
+
+
+4、修改 /home/gitlab/config/gitlab.rb
+
+按上面的方式，gitlab容器运行没问题，但在gitlab上创建项目的时候，生成项目的URL访问地址是按容器的hostname来生成的，也就是容器的id。作为gitlab服务器，我们需要一个固定的URL访问地址，于是需要配置gitlab.rb（宿主机路径：/home/gitlab/config/gitlab.rb）配置有三个参数如：
+
+```bash
+external_url 'http://192.168.1.133'    修改成本机ip地址
+gitlab_rails['gitlab_ssh_host'] = '192.168.1.133'
+gitlab_rails['gitlab_shell_ssh_port'] = 7003
+
+```
+
+
+
+5、修改/mnt/gitlab/data/gitlab-rails/etc/gitlab.yml
+
+找到关键字 * ## Web server settings * 
+
+将host的值改成映射的外部主机ip地址和端口，这里会显示在gitlab克隆地址
+
+
+
+6、重启gitlab
+
+docker exec -it gitlab /bin/bash  进去gitlab容器的命令
+gitlab-ctl reconfigure  重置gitlab客户端的命令
+
+
+
+docker restart gitlab 重启命令
+
+
+
+7、登录 http://192.168.1.133:8090
+
+输入密码Gangtise@12345
+
+
+
+gitlab常见的命令
+
+```
+# 重新应用gitlab的配置
+gitlab-ctl reconfigure
+
+# 重启gitlab服务
+gitlab-ctl restart
+
+# 查看gitlab运行状态
+gitlab-ctl status
+
+#停止gitlab服务
+gitlab-ctl stop
+
+# 查看gitlab运行日志
+gitlab-ctl tail
+
+# 停止相关数据连接服务
+gitlab-ctl stop unicorn
+gitlab-ctl stop sideki
+```
+
+
+
+####  gitlab容器命令
+
+- docker start gitlab 启动命令
+
+- docker restart gitlab 重启命令
+
+- docker stop gitlab 停止命令
+
+  
+
+  查看本机端口命令：
+
+```undefined
+netstat -tnl
+```
+
+
+
+# Centos7安装NFS网络文件系统
+
+服务端
+
+##### 查看linux系统信息
+
+cat /etc/redhat-release
+
+##### 1、查看是否安装了nfs和rpcbind
+
+rpm -aq | grep nfs
+
+rpm -aq | grep rpcbind
+
+##### 2、安装nfs和rpcbind
+
+yum install nfs-utils rpcbind
+
+##### 3、增加nfs配置文件
+
+vi /etc/exports
+
+添加共享信息：/home/adam/static 192.168.0.2(rw)
+
+/home/adam/static：共享文件夹
+
+192.168.0.2：可以挂载服务器目录的客户端ip
+
+(rw)：该客户端对共享的文件具有读写权限
+
+
+
+\#重新export一次
+
+exportfs -rv
+
+使exports的修改生效
+
+exportfs -a
+
+##### 4、配置hosts文件  （）
+
+192.168.0.1 hostname
+192.168.0.1：服务器本机的ip地址
+hostname：服务器的机器名
+
+可做可不错
+
+##### 5、启动nfs和rpcbind服务
+
+必须先启动rpcbind，再启动nfs，才能让NFS在rpcbind上注册成功
+
+service rpcbind start
+
+service nfs start  
+
+6、查看启动状态：
+
+service rpcbind status  
+
+service nfs status 
+
+注意，RPC的状态是Active: active (running)；而NFS的状态是Active: active (exited)。
+
+7、查看自己共享的服务
+
+showmount -e 
+
+##### 查看 RPC 服务的注册状况
+
+rpcinfo -p localhost  
+
+固定端口：
+
+vi /etc/sysconfig/nfs
+
+添加：
+RQUOTAD_PORT=30001
+LOCKD_TCPPORT=30002
+LOCKD_UDPPORT=30002
+MOUNTD_PORT=30003
+STATD_PORT=30004
+
+
+
+重启nfs和rpcbind
+
+service rpcbind restart
+
+service nfs restart
+
+
+
+### Client端
+
+##### 客户端服务器也需要安装nfs 和 rpcbind 服务，参考服务端，启动，检查服务是否正常
+
+service rpcbind start
+
+service nfs start  
+
+service rpcbind status 
+
+service nfs status 
+
+**（注意：客户端不需要启动nfs服务**
+
+安装nfs
+
+ yum -y install nfs-utils
+
+）  待验证
+
+##### 检查共享目录是否设置正确，xxx.xxx.xxx.xxx 为共享服务器地址
+
+showmount -e 192.168.0.1
+
+挂载远程服务器NFS分区到本地挂载点
+
+mkdir -p /application/share
+
+mount -t nfs 192.168.0.1:/application/share  /application/share
+
+挂载格式解读：
+
+mount -t nfs -o nolock,vers=2 10.0.0.147:/work/nfs /mnt
+
+mount :挂载命令
+nfs :使用的协议
+nolock :不阻塞
+vers : 使用的NFS版本号
+IP : NFS服务器的IP（NFS服务器运行在哪个系统上，就是哪个系统的IP）
+/work/nfs: 要挂载的目录（Ubuntu的目录）
+/mnt : 要挂载到的目录（开发板上的目录，注意挂载成功后，/mnt下原有数据将会被隐藏，无法找到）
+
+————————————————
+查看是否挂载上
+
+ df -h
+
+**取消挂载(先df -h 查看分区挂载情况)**
+
+umount 192.168.0.1:/application/share

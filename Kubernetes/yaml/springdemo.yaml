@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdemo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springdemo
+  template:
+    metadata:
+      labels:
+        app: springdemo
+    spec:
+      containers:
+      - name: springdemo
+        image: gangcloudapp.azurecr.cn/springdemo:1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 8899
+          name: springdemo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springdemo
+spec:
+  ports:
+  - port: 8899
+  selector:
+    app: springdemo

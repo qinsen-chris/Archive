@@ -1,0 +1,176 @@
+一、linux安装docker私服
+http://139.217.94.7:5000/v2/
+http://139.217.94.7:5000/v2/_catalog
+http://139.217.94.7:5000/v2/mydemo/tags/list
+
+方法1：从docker推送到私服：
+https://blog.csdn.net/Fickle_actor/article/details/88688793
+
+docker tag <Image ID 或者repository:tag> 私有仓库IP:端口/<自定义repository>:<自定tag>
+例：docker tag registry:latest 192.168.120.107:5000/my-registry:1.0
+
+如果是想将某个容器保存为镜像并推送的话，则需要在commit的时候将私有库的ip和端口放到repository中
+docker commit <容器ID或者容器名> <新repository>:<新TAG>
+例： docker commit myregistry  192.168.120.107:5000/my-registry:1.0
+
+执行完tag 命令或者 commit 命令后，我们执行docker images 可以发现，多出了一条repository 为 192.168.120.107:5000/my-registry ， TAG 为 1.0 的镜像
+然后将这个镜像推送到私有库
+docker push 192.168.120.107:5000/my-registry:1.0
+
+方法2：docker私服服务器开放docker 2375端口  ，通过idea上传
+https://www.cnblogs.com/panchanggui/p/12133928.html
+
+
+二、docker 开启2375端口，提供外部访问docker
+1、编辑docker文件：/usr/lib/systemd/system/docker.service
+命令：vim /usr/lib/systemd/system/docker.service
+修改ExecStart行，增加内容 -H tcp://0.0.0.0:2375 ，修改后如下：
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd:// --containerd=/run/containerd/containerd.sock
+
+2、重新加载docker配置
+systemctl daemon-reload // 1，加载docker守护线程
+systemctl restart docker // 2，重启docker
+
+
+三、linux使用 yum 安装 Azure CLI
+https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-yum?view=azure-cli-latest
+安装完成后进入先设置中国区环境
+#az cloud set --name AzureChinaCloud
+#az login 
+
+若要在本地安装 kubectl，请使用 az aks install-cli 命令
+az aks install-cli
+
+若要将 kubectl 配置为连接到 Kubernetes 群集
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+实例：az aks get-credentials --resource-group k8sGroup --name aksCluster
+
+验证到群集的连接
+kubectl get nodes
+
+
+
+1、创建 Azure 容器注册表实例
+az acr create --resource-group k8sGroup --name GangCloudApp --sku Basic
+登录到容器注册表
+az acr login --name <acrName>
+
+az acr list --resource-group k8sGroup --query "[].{acrLoginServer:gangcloudapp.azurecr.cn}" --output table
+
+2、镜像
+登录到注册表
+az acr login --name GangCloudApp
+
+使用容器注册表的 acrloginServer 地址标记本地 azure-vote-front 映像
+docker tag springdemo:1.0 gangcloudapp.azurecr.cn/springdemo:1.0
+
+将映像推送到注册表
+docker push gangcloudapp.azurecr.cn/springdemo:1.0
+
+查看注册表中的映像
+az acr repository list --name GangCloudApp --output table
+查看特定映像的标记
+az acr repository show-tags --name <acrName> --repository xxx --output table
+
+
+3、为现有的 AKS 群集配置 ACR 集成
+az aks update -n myAKSCluster -g myResourceGroup --attach-acr <acrName>   
+实例： az aks update -n aksCluster -g k8sGroup --attach-acr GangCloudApp
+
+将示例映像从 ACR 部署到 AKS 确保你具有正确的 AKS 凭据
+az aks get-credentials -g myResourceGroup -n myAKSCluster
+实例： az aks get-credentials -g k8sGroup -n aksCluster
+
+将映像导入 ACR
+##########az acr import  -n <myContainerRegistry> --source dockerhub.azk8s.cn/library/nginx:latest --image nginx:v1
+
+
+
+4、部署应用程序
+yaml测试路径：/home/yaml
+
+kubectl apply -f xxxx.yaml
+
+测试应用程序
+kubectl get service xxx --watch
+
+查看标签
+kubectl get pod --show-labels
+通过标签查找Pod
+kubectl get pod -l app=nginx
+查看发布状态
+kubectl rollout status deploy/nginx-deployment
+查看这个失败的Pod的明细：
+kubectl describe pod pod/springdemo-778c6f964d-7l8xr
+查看日志
+kubectl logs pod/springdemo-778c6f964d-7l8xr
+
+查看service（访问Pod是有负载均衡的）
+kubectl get svc/nginx-service
+
+删除pod
+kubectl delete pod  xxx
+无论各种方式生成的pod, 均可以使用如下命令强制删除:
+kubectl delete pods <pod> --grace-period=0 --force
+删除deployment
+kubectl delete deployment  xxx
+
+
+
+使用kubenet--------------------------------------
+创建服务主体并分配权限
+az ad sp create-for-rbac --skip-assignment
+
+
+
+-----------------------------cloud app
+一：eureka
+将eureka.instance.prefer-ip-address设置成false
+    fetch-registry: true  注释
+  application:
+    name: eureka-service
+	
+1、StatefulSet
+
+
+
+kubectl get pods -owide | grep eureka
+kubectl get pod
+kubectl get pvc
+
+client使用：
+defaultZone: http://eureka-0.eureka:1025/eureka/,http://eureka-1.eureka:1025/eureka/,http://eureka-2.eureka:1025/eureka/
+
+
+error:
+The Deployment "userinfo-service" is invalid: spec.template.spec.containers[0].ports[0].name: Invalid value: "userinfo-service": must be no more than 15 characters
+
+	
+	
+1制作镜像--->2控制管理pod--->3暴露应用--->4对外发布应用--->5日志/监控
+
+
+----------------------------hpa
+kubectl top node,pod
+kubectl get hpa 
+
+----------------------------Volume
+查看PersistentVolume资源详情
+kubectl get pv task-pv-volume -o wide
+查看PersistentVolumeClaim资源状态
+kubectl get pvc task-pv-claim
+
+kubectl delete pvc task-pv-claim
+kubectl delete pv task-pv-volume
+
+
+进入task-pv-pod的shell中
+kubectl exec -it task-pv-pod -- /bin/bash
+
+查看集群中的StorageClass信息
+kubectl get StorageClass --all-namespaces
+
+
+
+
+

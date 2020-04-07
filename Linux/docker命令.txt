@@ -89,6 +89,9 @@ docker top 容器名
 #登录守护式容器方式：
 docker exec -it 容器名称 (或者容器ID)  /bin/bash
 
+#docker 容器中安装vim
+ apt-get update，然后执行 apt-get install -y vim
+
 退出 exec
 
 拷贝宿主文件到容器：
@@ -163,3 +166,35 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
 
 	grant all privileges on  *.*  to qinsen@'%' identified by 'QSpassword' ;
 	flush privileges;
+	
+---------------------docker 容器打镜像------------------------
+2、nginx
+
+启动nginx镜像，进入容器 ：
+docker run -d -p 80:80 --name nginx nginx
+docker exec -it nginx /bin/bash
+ apt-get update
+ 然后执行 apt-get install -y vim
+
+
+/etc/nginx/nginx.conf
+/etc/nginx/conf.d/default.conf
+/usr/share/nginx/html
+
+
+	upstream eureka {
+        server http://eureka-0.eureka:1025;
+        server http://eureka-1.eureka:1025;
+		server http://eureka-2.eureka:1025;
+    }
+	
+	location /eureka {
+		root   html;
+		index  index.html index.htm;
+
+		proxy_pass http://eureka ;
+	}
+	
+	从nginx容器创建一个镜像 ： https://www.cnblogs.com/Howinfun/p/11652896.html
+	
+docker commit -m="update nginx" -a="qinsen" nginx mynginx

@@ -191,11 +191,35 @@ db.userquota.update(
 
 )
 
+
+
+db.company_data.update(
+{"companyCode":"1","companyDataTree.1.subnode.0.key":"1665148896393060352"},
+{$set:{"companyDataTree.1.subnode.0":{
+            "key":"555",
+            "nodename":"test",
+            "data":{}
+            }}}
+)
+
 # 删除整个文档
 db.userquota.deleteOne({"userId":1003},{$pull:{"quotaProperty":{"quotaID":100002}}})
 
+
+
 # 删除内嵌文档的数组元素
 db.userquota.update({"userId":1002,"quotaProperty.quotaID":100003},{$pull:{"quotaProperty":{"quotaID":100003}}})
+
+
+
+db.company_data.update(
+
+{"companyCode":"1"},
+
+{$pull:{"companyDataTree.1.subnode":{"key":"555"}}}
+
+)
+
 # 删除内嵌文档的数组元素,前面查询条件不能加$,查询条件要定位到要删除的数据
 db.userquota.update({"userId":1002,"quotaTreePropertys.propertys.quotaID":100001},{$pull:{"quotaTreePropertys.$.propertys":{"quotaID":100001}}})
 # 删除第一层数组对象， 查询条件不能加定位到哪一条

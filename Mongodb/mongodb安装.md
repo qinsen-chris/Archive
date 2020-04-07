@@ -209,11 +209,11 @@ noprealloc：不预先分配存储
 
 初始化并建立三个节点之间的信息，使用如下命令，大家修改为自己机器的IP
 
-use admin
+use admin；
 
 cfg={ _id:"mongors", members:[ {_id:0,host:'192.168.1.15:27017',priority:2}, {_id:1,host:'192.168.1.68:27017',priority:1}, {_id:2,host:'192.168.1.60:27018',arbiterOnly:true}] }; 
 
-rs.initiate(cfg) ；
+rs.initiate(cfg) ; 
 
 
 

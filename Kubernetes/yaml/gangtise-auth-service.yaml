@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gangtise-auth-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gangtise-auth-service
+  template:
+    metadata:
+      labels:
+        app: gangtise-auth-service
+    spec:
+      containers:
+      - name: gangtise-auth-service
+        image: gangcloudapp.azurecr.cn/gangtise-auth-service
+        resources:
+          requests:
+            cpu: 250m
+            memory: 960Mi
+          limits:
+            cpu: 250m
+            memory: 960Mi
+        ports:
+        - containerPort: 10010
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gangtise-auth-service
+spec:
+  ports:
+  - port: 10010
+  selector:
+    app: gangtise-auth-service

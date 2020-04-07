@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gangtise-userinfo-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gangtise-userinfo-service
+  template:
+    metadata:
+      labels:
+        app: gangtise-userinfo-service
+    spec:
+      containers:
+      - name: gangtise-userinfo-service
+        image: gangcloudapp.azurecr.cn/gangtise-userinfo-service
+        resources:
+          requests:
+            cpu: 250m
+            memory: 960Mi
+          limits:
+            cpu: 250m
+            memory: 960Mi
+        ports:
+        - containerPort: 10030
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gangtise-userinfo-service
+spec:
+  ports:
+  - port: 10030
+  selector:
+    app: gangtise-userinfo-service
