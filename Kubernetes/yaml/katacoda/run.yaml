@@ -1,0 +1,119 @@
+https://www.katacoda.com/courses/kubernetes/networking-introduction， 打开后会提供了一个实验用的Kubernetes集群，并可以通过网元模拟Terminal连接到集群的Master节点。
+https://www.katacoda.com/courses/kubernetes   学习网站
+
+1、clusterIP 2、targetport 3、nodeport 4、externalip 5、loadbalancer
+
+kubectl apply -f clusterip-target.yaml
+kubectl describe svc/webapp1-clusterip-targetport-svc
+
+export CLUSTER_IP=$(kubectl get services/webapp1-clusterip-targetport-svc -o go-template='{{(index .spec.clusterIP)}}')
+echo CLUSTER_IP=$CLUSTER_IP
+curl $CLUSTER_IP:8080
+
+1、clusterIP
+export CLUSTER_IP=$(kubectl get services/webapp1-clusterip-svc -o go-template='{{(index .spec.clusterIP)}}')
+echo CLUSTER_IP=$CLUSTER_IP
+curl $CLUSTER_IP:80
+
+2、targetport
+export CLUSTER_IP=$(kubectl get services/webapp1-clusterip-targetport-svc -o go-template='{{(index .spec.clusterIP)}}')
+echo CLUSTER_IP=$CLUSTER_IP
+curl $CLUSTER_IP:8080
+
+
+5、loadbalancer
+export LoadBalancerIP=$(kubectl get services/webapp1-loadbalancer-svc -o go-template='{{(index .status.loadBalancer.ingress 0).ip}}')
+echo LoadBalancerIP=$LoadBalancerIP
+curl $LoadBalancerIP
+
+通过netstat命令可以看到Kube-proxy在主机网络上创建了30080监听端口，用于接收从主机网络进入的外部流量。
+master $ netstat -lnp|grep 30080
+tcp6 0 0 :::30080 :::* LISTEN 7427/kube-proxy
+
+
+
+kubectl describe svc/webapp1-clusterip-targetport-svc 
+1、clusterIP:
+Name:              webapp1-clusterip-svc
+Namespace:         default
+Labels:            app=webapp1-clusterip
+Annotations:       kubectl.kubernetes.io/last-applied-configuration:
+                     {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"webapp1-clusterip"},"name":"webapp1-clusterip-svc","name...
+Selector:          app=webapp1-clusterip
+Type:              ClusterIP
+IP:                10.102.6.243
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.32.0.5:80,10.32.0.6:80
+Session Affinity:  None
+Events:            <none>
+
+2、targetport:
+Name:              webapp1-clusterip-targetport-svc
+Namespace:         default
+Labels:            app=webapp1-clusterip-targetport
+Annotations:       kubectl.kubernetes.io/last-applied-configuration:
+                     {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"webapp1-clusterip-targetport"},"name":"webapp1-clusterip...
+Selector:          app=webapp1-clusterip-targetport
+Type:              ClusterIP
+IP:                10.107.235.201
+Port:              <unset>  8080/TCP
+TargetPort:        80/TCP
+Endpoints:         10.32.0.7:80,10.32.0.8:80
+Session Affinity:  None
+Events:            <none>
+
+3、nodeport:
+Name:                     webapp1-nodeport-svc
+Namespace:                default
+Labels:                   app=webapp1-nodeport
+Annotations:              kubectl.kubernetes.io/last-applied-configuration:
+                            {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"webapp1-nodeport"},"name":"webapp1-nodeport-svc","namesp...
+Selector:                 app=webapp1-nodeport
+Type:                     NodePort
+IP:                       10.111.189.17
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  30080/TCP
+Endpoints:                10.32.0.10:80,10.32.0.9:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+
+4、externalip:
+Name:              webapp1-externalip-svc
+Namespace:         default
+Labels:            app=webapp1-externalip
+Annotations:       kubectl.kubernetes.io/last-applied-configuration:
+                     {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"webapp1-externalip"},"name":"webapp1-externalip-svc","na...
+Selector:          app=webapp1-externalip
+Type:              ClusterIP
+IP:                10.96.229.212
+External IPs:      172.17.0.42
+Port:              <unset>  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.32.0.11:80,10.32.0.12:80
+Session Affinity:  None
+Events:            <none>
+
+5、loadbalancer:
+Name:                     webapp1-loadbalancer-svc
+Namespace:                default
+Labels:                   app=webapp1-loadbalancer
+Annotations:              kubectl.kubernetes.io/last-applied-configuration:
+                            {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"webapp1-loadbalancer"},"name":"webapp1-loadbalancer-svc"...
+Selector:                 app=webapp1-loadbalancer
+Type:                     LoadBalancer
+IP:                       10.97.173.150
+LoadBalancer Ingress:     172.17.0.42
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  32260/TCP
+Endpoints:                10.32.0.14:80,10.32.0.15:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason                Age   From                Message
+  ----    ------                ----  ----                -------
+  Normal  CreatingLoadBalancer  27s   service-controller  Creating load balancer
+  Normal  CreatedLoadBalancer   27s   service-controller  Created load balancer

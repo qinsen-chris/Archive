@@ -182,6 +182,12 @@ db.getCollection('usertemplate').update(
     }
 )
 
+ $push : 它是用来对Array (list)数据类型进行 增加新元素的
+
+ $set ：修改field数据，没有就新增该field
+
+$unset : 删除field
+
 # 更新多层数组内的属性，用下标
 db.userquota.update(
 

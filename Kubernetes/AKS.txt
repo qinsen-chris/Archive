@@ -34,6 +34,18 @@ systemctl restart docker // 2，重启docker
 
 三、linux使用 yum 安装 Azure CLI
 https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-yum?view=azure-cli-latest
+
+历史版本下载：https://packages.microsoft.com/yumrepos/azure-cli/
+需要依赖python3.6以上版本
+rpm格式文件安装：
+rpm -ivh  xxxx.rpm
+
+python3.6安装：
+1、通过  gcc --version  查看，没安装的先安装gcc，yum -y install gcc
+2、安装其它依赖包
+
+
+
 安装完成后进入先设置中国区环境
 #az cloud set --name AzureChinaCloud
 #az login 
@@ -41,52 +53,57 @@ https://docs.microsoft.com/zh-cn/cli/azure/install-azure-cli-yum?view=azure-cli-
 若要在本地安装 kubectl，请使用 az aks install-cli 命令
 az aks install-cli
 
+group:  gangtise-k8sGroup
+name :  aksCluster
+
 若要将 kubectl 配置为连接到 Kubernetes 群集
 az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
-实例：az aks get-credentials --resource-group k8sGroup --name aksCluster
+实例：az aks get-credentials --resource-group gangtise-k8sGroup --name aksCluster
 
 验证到群集的连接
 kubectl get nodes
 
 
 
-1、创建 Azure 容器注册表实例
-az acr create --resource-group k8sGroup --name GangCloudApp --sku Basic
+1、-------------------创建 Azure 容器注册表实例
+az acr create --resource-group gangtise-k8sGroup --name gangtiseACR --sku Basic
 登录到容器注册表
 az acr login --name <acrName>
+az acr login --name gangtiseACR
 
-az acr list --resource-group k8sGroup --query "[].{acrLoginServer:gangcloudapp.azurecr.cn}" --output table
+az acr list --resource-group gangtise-k8sGroup --query "[].{acrLoginServer:gangtiseacr.azurecr.cn}" --output table
 
-2、镜像
+2、-------------------镜像
 登录到注册表
-az acr login --name GangCloudApp
+az acr login --name gangtiseACR
 
 使用容器注册表的 acrloginServer 地址标记本地 azure-vote-front 映像
-docker tag springdemo:1.0 gangcloudapp.azurecr.cn/springdemo:1.0
+docker tag springdemo:1.0 gangtiseacr.azurecr.cn/springdemo:1.0
 
 将映像推送到注册表
-docker push gangcloudapp.azurecr.cn/springdemo:1.0
+docker push gangtiseacr.azurecr.cn/springdemo:1.0
 
 查看注册表中的映像
-az acr repository list --name GangCloudApp --output table
+az acr repository list --name gangtiseACR --output table
 查看特定映像的标记
-az acr repository show-tags --name <acrName> --repository xxx --output table
+az acr repository show-tags --name gangtiseACR --repository xxx --output table
 
 
-3、为现有的 AKS 群集配置 ACR 集成
+3、-------------------为现有的 AKS 群集配置 ACR 集成
 az aks update -n myAKSCluster -g myResourceGroup --attach-acr <acrName>   
-实例： az aks update -n aksCluster -g k8sGroup --attach-acr GangCloudApp
+实例： az aks update -n aksCluster -g gangtise-k8sGroup --attach-acr gangtiseACR
 
 将示例映像从 ACR 部署到 AKS 确保你具有正确的 AKS 凭据
 az aks get-credentials -g myResourceGroup -n myAKSCluster
-实例： az aks get-credentials -g k8sGroup -n aksCluster
+实例： az aks get-credentials -g gangtise-k8sGroup -n aksCluster
 
 将映像导入 ACR
 ##########az acr import  -n <myContainerRegistry> --source dockerhub.azk8s.cn/library/nginx:latest --image nginx:v1
 
 
 
-4、部署应用程序
+4、-------------------部署应用程序
+
 yaml测试路径：/home/yaml
 
 kubectl apply -f xxxx.yaml
@@ -115,15 +132,105 @@ kubectl delete pods <pod> --grace-period=0 --force
 删除deployment
 kubectl delete deployment  xxx
 
+5、-------------------使用 SSH 连接到 Azure Kubernetes 服务 (AKS) 群集节点以进行维护或故障排除
+
+5.1配置基于虚拟机规模集的 AKS 群集以进行 SSH 访问
+CLUSTER_RESOURCE_GROUP=$(az aks show --resource-group gangtise-k8sGroup --name aksCluster --query nodeResourceGroup -o tsv)
+echo MC_gangtise-k8sGroup_aksCluster_chinanorth2
+
+SCALE_SET_NAME=$(az vmss list --resource-group $CLUSTER_RESOURCE_GROUP --query [0].name -o tsv)
+echo aks-agentpool-35588370-vmss
 
 
-使用kubenet--------------------------------------
-创建服务主体并分配权限
-az ad sp create-for-rbac --skip-assignment
+ssh密钥对
+ssh-keygen -m PEM -t rsa -b 2048
+
+az vmss extension set  \
+    --resource-group $CLUSTER_RESOURCE_GROUP \
+    --vmss-name $SCALE_SET_NAME \
+    --name VMAccessForLinux \
+    --publisher Microsoft.OSTCExtensions \
+    --version 1.4 \
+    --protected-settings "{\"username\":\"azureuser\", \"ssh_key\":\"$(cat ~/.ssh/id_rsa.pub)\"}"
+
+az vmss update-instances --instance-ids '*' \
+    --resource-group $CLUSTER_RESOURCE_GROUP \
+    --name $SCALE_SET_NAME
 
 
+请在 AKS 群集中运行帮助器 pod
+kubectl run --generator=run-pod/v1 -it --rm aks-ssh --image=debian
+将终端会话连接到该容器后，使用 apt-get 安装 SSH 客户端：
+apt-get update && apt-get install openssh-client -y
 
------------------------------cloud app
+新开一个终端 辅助证书到pod中
+kubectl cp ~/.ssh/id_rsa $(kubectl get pod -l run=aks-ssh -o jsonpath='{.items[0].metadata.name}'):/id_rsa
+
+查看 AKS 群集节点的专用 IP 地址
+kubectl get nodes -o wide
+进入辅助容器：
+kubectl exec -it aks-ssh -- /bin/bash
+ 
+返回建立的aks-ssh
+ssh -i id_rsa azureuser@120.240.0.4
+ 
+安装helm:
+sudo snap install helm --classic
+检查helm:
+helm version
+
+6、-------------------安装和使用 Istio
+ISTIO_VERSION=1.4.0
+curl -sL "https://github.com/istio/istio/releases/download/$ISTIO_VERSION/istio-$ISTIO_VERSION-linux.tar.gz" | tar xz
+
+在 AKS 上安装 Istio 组件
+
+
+7、-------------------启动 Kubernetes 仪表板
+az aks browse --resource-group gangtise-k8sGroup --name aksCluster
+
+请将 REPLACE_WITH_YOUR_SECURE_PASSWORD 令牌替换为你的密码：Gangtise@12345
+添加 Grafana 机密
+GRAFANA_USERNAME=$(echo -n "grafana" | base64)
+GRAFANA_PASSPHRASE=$(echo -n "Gangtise@12345" | base64)
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana
+  namespace: istio-system
+  labels:
+    app: grafana
+type: Opaque
+data:
+  username: $GRAFANA_USERNAME
+  passphrase: $GRAFANA_PASSPHRASE
+EOF
+
+添加 Kiali 机密
+KIALI_USERNAME=$(echo -n "kiali" | base64)
+KIALI_PASSPHRASE=$(echo -n "Gangtise@12345" | base64)
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kiali
+  namespace: istio-system
+  labels:
+    app: kiali
+type: Opaque
+data:
+  username: $KIALI_USERNAME
+  passphrase: $KIALI_PASSPHRASE
+EOF
+
+
+istioctl manifest apply -f /home/yaml/istio.aks.yaml --logtostderr --set installPackagePath=./install/kubernetes/operator/charts
+kubectl get pods --namespace istio-system
+
+8、-----------------------------cloud app
 一：eureka
 将eureka.instance.prefer-ip-address设置成false
     fetch-registry: true  注释
@@ -145,6 +252,30 @@ defaultZone: http://eureka-0.eureka:1025/eureka/,http://eureka-1.eureka:1025/eur
 error:
 The Deployment "userinfo-service" is invalid: spec.template.spec.containers[0].ports[0].name: Invalid value: "userinfo-service": must be no more than 15 characters
 
+	
+	
+	
+9、	----------------------------- configmap
+创建：
+kubectl create -f myconfigmap.yaml
+kubectl create configmap gameconfig --from-file=myconfigmap.yaml -n test
+
+查看：
+kubectl get configmap --all-namespaces
+kubectl describe configmap special-config
+
+删除：
+#kubectl delete configmap myconfigmap
+或#kubectl delete -f myconfigmap.yml
+	
+(1) 命令行直接创建命名空间
+$ kubectl create namespace spring-app	
+查看： kubectl get namespaces
+删除： kubectl delete namespaces new-namespace
+#删除一个namespace会自动删除所有属于该namespace的资源。default和kube-system命名空间不可删除。
+	
+	
+	
 	
 	
 1制作镜像--->2控制管理pod--->3暴露应用--->4对外发布应用--->5日志/监控
@@ -169,6 +300,30 @@ kubectl exec -it task-pv-pod -- /bin/bash
 
 查看集群中的StorageClass信息
 kubectl get StorageClass --all-namespaces
+
+
+----------------------------problem
+gangtise-gateway-service:
+2020-05-12 12:02:41 [ERROR] [gangtise-gateway-service] [1:http-nio-1925-exec-8]  [73] [gangtise-gateway-service-85bd476c79-cmw4b] [45d86f2ff08527f6] 
+com.gangtise.gateway.config.GtsFallback  Excption: java.net.SocketTimeoutException: Read timed out
+2020-05-12 12:07:43 [WARN] [gangtise-gateway-service] [1:http-nio-1925-exec-6]  [115] [gangtise-gateway-service-85bd476c79-cmw4b] [129709ea0ce13ac9] 
+o.s.c.n.z.f.r.s.AbstractRibbonCommand    The Hystrix timeout of 60000ms for the command gangtise-auth-service is set lower than the combination of the Ribbon read and connect timeout, 80000ms.
+
+gangtise-auth-service:
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: Broken pipe
+Caused by: java.io.IOException: Broken pipe
+
+
+--------------------------开发环境
+222.67.13.106
+
+
+
+--------------------------LB
+40.73.8.193:30001
+
+
+
 
 
 

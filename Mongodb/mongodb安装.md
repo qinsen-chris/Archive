@@ -221,7 +221,11 @@ rs.initiate(cfg) ;
 
 
 
-8、添加节点
+8、添加、删除节点
+
+```
+rs.remove("192.168.1.60:27018")
+```
 
 rs.add({"_id":3,"host":"10.0.2.28:27017"})
 
@@ -258,6 +262,31 @@ Replica Set
 执行（修改节点host）
 
 var config=rs.config(); config.members[0].host="100.100.100.100:27017"; rs.reconfig(config);
+
+
+
+
+
+### 卸载
+
+停止服务：
+
+```
+sudo service mongod stop
+```
+
+删除软件包：
+
+```
+sudo yum erase $(rpm -qa | grep mongodb-org)
+```
+
+删除数据和日志目录：
+
+```
+sudo rm -r /var/log/mongodb
+sudo rm -r /var/lib/mongo
+```
 
 
 

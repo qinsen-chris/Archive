@@ -145,6 +145,12 @@ docker cp 容器名:容器里面的路径  宿主机的相应路径
  自动补齐：
  yum install bash-completion
  
+ 设置docker开机启动
+
+docker安装之后，已经安装了开机启动service文件，但还需要在设置下开机启动，才能在服务器重启时自动启动
+
+systemctl enable docker
+ 
 ----------------------安装mysql:
   cat  /etc/redhat-release   //查看系统版本
   

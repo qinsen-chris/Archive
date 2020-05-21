@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gangtise-userinfo-service
+  namespace: spring-app
 spec:
   replicas: 3
   selector:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
       - name: gangtise-userinfo-service
-        image: gangcloudapp.azurecr.cn/gangtise-userinfo-service
+        image: gangtiseacr.azurecr.cn/gangtise-userinfo-service
         resources:
           requests:
             cpu: 250m
@@ -24,12 +25,30 @@ spec:
             memory: 960Mi
         ports:
         - containerPort: 10030
+        envFrom:
+        - configMapRef:
+            name: spring-config
+        env:
+          - name: AZBLOB_ACCOUNTNAME
+            value: gangtisestorage
+          - name: AZBLOB_KEY
+            value: kDJnXJ/bjj+ky/krihEE9lLFSJgWrBQs46toNjOP9y5H6szXtF8HIhF/1ytYB/tJ9C1iap+gc3Ev23S4XMotuw==          
+          - name: AZBLOB_IMAGE
+            value: images
+          - name: MYSQL_URL
+            value: jdbc:mysql://gangtisedb.mysql.database.chinacloudapi.cn:3306/gangtise_user2?useSSL=true&requireSSL=false&characterEncoding=UTF-8
+          - name: MYSQL_USERNAME
+            value: gangtise@gangtisedb
+          - name: MYSQL_PASSWORD
+            value: Qwer!234
 
+            
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: gangtise-userinfo-service
+  namespace: spring-app
 spec:
   ports:
   - port: 10030

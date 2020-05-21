@@ -1,0 +1,59 @@
+python2安装
+http://vault.centos.org/7.1.1503/os/x86_64/Packages/
+
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-libs-2.7.5-16.el7.x86_64.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-2.7.5-16.el7.x86_64.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-iniparse-0.4-9.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-pycurl-7.19.0-17.el7.x86_64.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-devel-2.7.5-16.el7.x86_64.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-urlgrabber-3.10-6.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/rpm-python-4.11.1-25.el7.x86_64.rpm
+
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-chardet-2.0.1-7.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/python-kitchen-1.1.1-5.el7.noarch.rpm
+
+根据以上顺序依次执行该安装命令
+rpm -ivh rpm包
+
+出现安装包的依赖问题，此时如下解决即可：
+#rpm -ivh python- rpm-python- --nodeps --force
+--nodeps --force为不考虑依赖包，强制安装。
+
+yum包
+
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-3.4.3-125.el7.centos.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-metadata-parser-1.1.4-10.el7.x86_64.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-plugin-aliases-1.1.31-29.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.31-29.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-plugin-protectbase-1.1.31-29.el7.noarch.rpm
+wget http://vault.centos.org/7.1.1503/os/x86_64/Packages/yum-utils-1.1.31-29.el7.noarch.rpm
+
+安装yum，依次执行以下命令
+
+rpm -ivh yum-*
+rpm -ivh yum-metadata-parser-1.1.4-10.el7.x86_64.rpm
+rpm -ivh yum-3.4.3-161.el7.centos.noarch.rpm yum-plugin-fastestmirror-1.1.31-50.el7.noarch.rpm
+
+
+
+
+ cat /etc/redhat-release 
+CentOS Linux release 7.6.1810 (Core)
+
+配epel源_阿里
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+
+安装python3.6.8
+yum install python36 -y
+
+安装pip3
+# 搜索pip3的安装包名称
+yum  whatprovides pip3
+ 
+# 安装pip3
+yum install python36-pip -y
+
+验证
+[root@node1 ~]# python3 --version
+Python 3.6.8
+

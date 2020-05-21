@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gangtise-auth-service
+  name: gangtise-gateway-service
   namespace: spring-app
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: gangtise-auth-service
+      app: gangtise-gateway-service
   template:
     metadata:
       labels:
-        app: gangtise-auth-service
+        app: gangtise-gateway-service
     spec:
       containers:
-      - name: gangtise-auth-service
-        image: gangtiseacr.azurecr.cn/gangtise-auth-service
+      - name: gangtise-gateway-service
+        image: gangtiseacr.azurecr.cn/gangtise-gateway-service
         resources:
           requests:
             cpu: 250m
@@ -24,19 +24,8 @@ spec:
             cpu: 250m
             memory: 960Mi
         ports:
-        - containerPort: 10010
+        - containerPort: 1925
         envFrom:
         - configMapRef:
             name: spring-config
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gangtise-auth-service
-  namespace: spring-app
-spec:
-  ports:
-  - port: 10010
-  selector:
-    app: gangtise-auth-service
