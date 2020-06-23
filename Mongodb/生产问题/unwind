@@ -1,0 +1,56 @@
+
+{
+	"aggregate": "__collection__",
+	"pipeline": [{
+		"$unwind": "$userSectorSecuritys"
+	}, {
+		"$match": {
+			"userid": "1",
+			"userSectorSecuritys.sectorId": "1651057215254261760"
+		}
+	}, {
+		"$project": {
+			"securitys": "$userSectorSecuritys.securitys",
+			"_id": 0
+		}
+	}, {
+		"$unwind": "$securitys"
+	}, {
+		"$skip": {
+			"$numberLong": "0"
+		}
+	}, {
+		"$limit": {
+			"$numberLong": "3"
+		}
+	}]
+}
+
+
+#查询不出数据
+{
+	"aggregate": "__collection__",
+	"pipeline": [{
+		"$unwind": "$userSectorSecuritys"
+	}, {
+		"$match": {
+			"userid": "1",
+			"userSectorSecuritys.sectorId": "1651057215254261760"
+		}
+	}, {
+		"$project": {
+			"securitys": "$userSectorSecuritys.securitys",
+			"_id": 0
+		}
+	}, {
+		"$unwind": "$userSectorSecuritys.securitys"
+	}, {
+		"$skip": {
+			"$numberLong": "0"
+		}
+	}, {
+		"$limit": {
+			"$numberLong": "3"
+		}
+	}]
+}

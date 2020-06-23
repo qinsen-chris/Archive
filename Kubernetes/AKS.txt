@@ -132,7 +132,7 @@ kubectl delete pods <pod> --grace-period=0 --force
 删除deployment
 kubectl delete deployment  xxx
 
-5、-------------------使用 SSH 连接到 Azure Kubernetes 服务 (AKS) 群集节点以进行维护或故障排除
+5、-------------------使用 SSH 连接到(AKS) 群集节点以进行维护或故障排除
 
 5.1配置基于虚拟机规模集的 AKS 群集以进行 SSH 访问
 CLUSTER_RESOURCE_GROUP=$(az aks show --resource-group gangtise-k8sGroup --name aksCluster --query nodeResourceGroup -o tsv)
@@ -254,7 +254,7 @@ The Deployment "userinfo-service" is invalid: spec.template.spec.containers[0].p
 
 	
 	
-	
+
 9、	----------------------------- configmap
 创建：
 kubectl create -f myconfigmap.yaml
@@ -323,9 +323,38 @@ Caused by: java.io.IOException: Broken pipe
 40.73.8.193:30001
 
 
+--------------------------------缩放节点池
+获取 myResourceGroup 资源组中名为 myAKSCluster 的群集的节点池名称 ：
+az aks show --resource-group gangtise-k8sGroup --name aksCluster --query agentPoolProfiles
+
+[
+  {
+    "count": 1,
+    "maxPods": 110,
+    "name": "nodepool1",
+    "osDiskSizeGb": 30,
+    "osType": "Linux",
+    "storageProfile": "ManagedDisks",
+    "vmSize": "Standard_DS2_v2"
+  }
+]
+
+使用 az aks scale 命令缩放群集节点
+az aks scale --resource-group gangtise-k8sGroup --name aksCluster --node-count 3 --nodepool-name nodepool1
 
 
 
+helm install nginx-ingress stable/nginx-ingress \
+    --namespace spring-app \
+    --set controller.replicaCount=2 \
+    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+
+
+
+testCluster:
+
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImNnWDQwTzduTUx4VU9CR2l0RjNjSm4wWHRVang5Z05rSEs3U1Rid3lhVUUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrdWJvYXJkLXVzZXItdG9rZW4tOTV6djkiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoia3Vib2FyZC11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMDJmNGNlMGUtZjIwNS00ZGYyLTk4YWUtMDYwNmQyMGQ1N2ZkIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmt1Ym9hcmQtdXNlciJ9.ZrSgPfGSUd394zz1fHWHY6s4ee58mS1Eap_dVH3Tx_Ekw67AiRGGcWMuDugO4Uaas9IseZ5bXE0K5_fRBqAYnGJ3LnPe53iQpBYYVv0jk8gmAJZ7B2i_Es20MCmjcwEBE5DFcjem7pQf8YBd1TLIXqQFoIAjMIoT5SqKGy8gvAdxgpXMd_bWsTIe8HH1m8_JJBnWtwgsDckbIWOzEzeBIdMXSVJpAB9DW45vIfW9eIlEMqoic6dTQYzdwBbsdJ-AZ9VDQRCL8JwUCb3-W-wkfOJIhr_VoSye5cOUpKrSR3GZGQjU5UFLLBTeDyflTRBGvXLxTItr81rggCnAdUeuoEvw69eleV1SnkLhxoz4r9edBK_K_uJnjO_5bquzC-ssVc0EZLCgNcSKJmP3nJTxg7eYGgmuSzfg8edAWUm3j_InwWTNzxWeqPpl_n4oXY2QFw-9n2TAFeuRk5FI4AuxqXnE3q0_OB_j2vftZtFQi46cMT7bhn-MUX0MQsDRQZznNK0WAiLHdgxe0pn-sOVc71c9OgyWFO9rPzJj3deaP838LAxjOdcpKhr9MYvU89zqPn7FpBZ44wa_2XKLR5RQG3Hpl-lAoywNk03utKe81XBfaWhKVNdH3TyKw07V_I5GL70AiG1hi9yp_an-kUD1qNUNGt8IetO1VziuDujmYR8
 
 
 

@@ -1,0 +1,84 @@
+{
+    "_id" : ObjectId("5eec3319cdd24b7a85c08f4d"),
+    "userid" : "1636194180764319744",
+    "updateTime" : ISODate("2020-06-20T13:42:04.746+08:00"),
+    "userSectorTree" : [ 
+        {
+            "sectorId" : "1636194179517112320",
+            "sectorName" : "WatchList",
+            "subSectors" : []
+        }, 
+        {
+            "sectorId" : "1636194179275960320",
+            "sectorName" : "Recent",
+            "subSectors" : [],
+            "_class" : "com.gangtise.userdata.comm.model.UserSectorContent"
+        }, 
+        {
+            "sectorId" : "1635842179621785600",
+            "sectorName" : "我的自选股3",
+            "subSectors" : [],
+            "_class" : "com.gangtise.userdata.biz.sector.model.UserSectorContent"
+        }
+    ],
+    "userSectorSecuritys" : [ 
+        {
+            "sectorId" : "1635842179621785600",
+            "securitys" : [ 
+                "300752.SZ", 
+                "300753.SZ", 
+                "300754.SZ", 
+                "300755.SZ", 
+                "300756.SZ", 
+                "300757.SZ"
+            ]
+        }, 
+        {
+            "sectorId" : "1635842179621785602",
+            "securitys" : [ 
+                "300757.SZ"
+            ]
+        }
+    ],
+    "_class" : "com.gangtise.userdata.comm.model.UserSector"
+}
+
+
+user_data_visitor库查询：
+查询：
+db.getCollection('usersector').aggregate([
+{"$unwind":"$userSectorSecuritys" },
+{"$match":{"userid":"1636194180764319744","userSectorSecuritys.sectorId":"1635842179621785600"}},
+{"$project":{"userSectorSecuritys.securitys":1,_id:0}},
+{"$unwind":"$userSectorSecuritys.securitys" }
+])
+
+
+添加skip limit 无法查询出结果
+db.getCollection('usersector').aggregate([
+{"$unwind":"$userSectorSecuritys" },
+{"$match":{"userid":"1636194180764319744","userSectorSecuritys.sectorId":"1635842179621785600"}},
+{"$project":{"userSectorSecuritys.securitys":1,_id:0}},
+{"$unwind":"$userSectorSecuritys.securitys" },
+{"$skip":0},
+{"$limit":3}
+])
+
+
+user_data库查询：
+db.getCollection('usersector').aggregate([
+{"$unwind":"$userSectorSecuritys" },
+{"$match":{"userid":"1669078534318891008","userSectorSecuritys.sectorId":"1669078530761560064"}},
+{"$project":{"userSectorSecuritys.securitys":1,_id:0}},
+{"$unwind":"$userSectorSecuritys.securitys" },
+{"$skip":0},
+{"$limit":3}
+])
+
+
+文档：
+https://docs.azure.cn/zh-cn/cosmos-db/mongodb-feature-support-36
+
+
+
+

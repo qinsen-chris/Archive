@@ -307,6 +307,8 @@ centos默认安装了mariadb，因此，在安装mysql之前，需要卸载系�
 启动mysql: systemctl start mysqld
 查看状态：systemctl status mysqld
 
+
+
 安装完成后，在/var/log/mysqld.log 下查看，root用户初始密码， 登录后修改root密码。
 
 

@@ -1,0 +1,24 @@
+userdata - > userinfo
+
+curl -H "Content-type:application/json" -X POST -d '{"userAccount":"admin"}'  http://120.240.0.223:10030/tbUserInfo/selectUserByUserName
+
+1、进入userdata容器，安装vim
+apt-get update
+apt-get install vim
+
+
+
+2、vim curl-format.txt
+ 
+time_namelookup: %{time_namelookup}\n
+time_connect: %{time_connect}\n
+time_appconnect: %{time_appconnect}\n
+time_redirect: %{time_redirect}\n
+time_pretransfer: %{time_pretransfer}\n
+time_starttransfer: %{time_starttransfer}\n
+----------\n
+time_total: %{time_total}\n
+
+
+3、
+curl -w "@curl-format.txt" -o /dev/null -s -L -H "Content-type:application/json" -X POST -d '{"userAccount":"admin"}'  http://120.240.0.223:10030/tbUserInfo/selectUserByUserName

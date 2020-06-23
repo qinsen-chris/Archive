@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   volumeMode: Filesystem
-  storageClassName: manual
+  storageClassName: gts-nfs
   nfs:
     server: 172.18.1.4
     path: /data

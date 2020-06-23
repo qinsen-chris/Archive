@@ -1,0 +1,5 @@
+0 15 * * * su - root -c  /root/yaml/shutDown.sh
+0 23 * * * su - root -c  /root/yaml/shutUp.sh
+
+
+#注意时间也跟当前系统时间对应

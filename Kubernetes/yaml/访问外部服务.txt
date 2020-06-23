@@ -1,0 +1,46 @@
+Endpoint访问外部服务
+k8s访问集群外独立的服务最好的方式是采用Endpoint方式，以mysql服务为例:
+
+1）创建mysql-service.yaml
+[root@kevin~]# vim mysql-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-kevin
+spec:
+  ports:
+    - port: 3306
+ 
+2) 创建mysql-endpoints.yaml
+[root@kevin~]# vim mysql-endpoints.yaml
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mysql-kevin
+  namespace: default
+subsets:
+  - addresses:
+      - ip: 172.16.60.55
+    ports:
+      - port: 3306
+ 
+3) 测试连接数据库
+[root@kevin~]# kubectl exec -it mysql-client-h7jk8 bash
+bash-4.1# mysql -hmysql-kevin -u user -p
+Enter password:
+.........
+mysql>
+ 
+4) 查看这个service
+[root@kevin~]# kubectl describe svc mysql-kevin
+Name:           mysql-kevin
+Namespace:      default
+Labels:         <none>
+Annotations:        <none>
+Selector:       <none>
+Type:           ClusterIP
+IP:         10.254.125.157
+Port:           <unset> 3306/TCP
+Endpoints:      172.16.60.55:3306
+Session Affinity:   None
+Events:         <none>

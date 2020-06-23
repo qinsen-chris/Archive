@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gts-keyboard-gaze
+  namespace: spring-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gts-keyboard-gaze
+  template:
+    metadata:
+      labels:
+        app: gts-keyboard-gaze
+    spec:
+      containers:
+      - name: gts-keyboard-gaze
+        image: gangtiseacr.azurecr.cn/gts-gaze-search:1.0.0
+        resources:
+          requests:
+            cpu: 200m
+            memory: 800Mi
+          limits:
+            cpu: 200m
+            memory: 800Mi
+        ports:
+        - containerPort: 13012
+        envFrom:
+        - configMapRef:
+            name: spring-config
+        env:
+          - name: ES_CLUSTER_NAME
+            value: elasticsearch
+          - name: ES_NODES
+            value: 10.0.2.10:9300,10.0.2.11:9300,10.0.2.12:9300
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gts-keyboard-gaze
+  namespace: spring-app
+spec:
+  ports:
+  - port: 13012
+  selector:
+    app: gts-keyboard-gaze

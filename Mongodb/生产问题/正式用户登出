@@ -1,0 +1,175 @@
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-8] [71] [java-visitor] [0021cd50eb5701bb] Opened connection [connectionId{localValue:12, serverValue:-415309886}] to gangtise-southeastasia.mongo.cosmos.azure.com:10255
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-8] [109] [java-visitor] [0021cd50eb5701bb] addUserSectorCatalogue,exists耗时：128
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-8] [134] [java-visitor] [0021cd50eb5701bb] addUserSectorCatalogue,用户首次添加save耗时：8
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-9] [109] [java-visitor] [0021cd50eb5701bb] addUserSectorCatalogue,exists耗时：8
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-9] [153] [java-visitor] [0021cd50eb5701bb] addUserSectorCatalogue,插入到固定下标push耗时：36
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-10] [211] [java-visitor] [45877a1a759e4e5]  qianduan; baowen; request body：{"gid":{"pg":"global","idx":"1001"},"http":[{"condition":{"must":[{"term":{"userid":"null"}}]},"field":["sectorid","sectorname"],"gid":{"name":"customStockCate","id":"0,0"},"pageNo":0,"pageSize":10,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-10] [67] [java-visitor] [45877a1a759e4e5] findUserSectorById,findOne耗时：9
+2020-06-20 12:56:09 [ERROR] [gts-userdata-service] [93296:http-nio-12001-exec-10] [83] [java-visitor] [45877a1a759e4e5] i18n error: msg Can't find resource for bundle java.util.PropertyResourceBundle, key 无法查询到该用户信息！
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-10] [100] [java-visitor] [45877a1a759e4e5]  UserSectorProvider; listUserSectorById; useTime:13; [RequestQuery(httpType=query, http=[com.gangtise.common.utils.gtshttprequest.RequestQuery$QueryObject@767cef71])]
+2020-06-20 12:56:09 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-10] [135] [java-visitor] [45877a1a759e4e5]  UserSectorProvider; listUserSectorById; RESULT : {"gid":{"pg":"global","idx":"1001"},"lang":"en-us","msg":"无法查询到该用户信息！","result":[{"table":{"data":[],"field":[],"gid":{"name":"customStockCate","id":"0,0"},"info":{"mode":"table","dataRange":0,"dataBegin":0,"rank":"row","compressed":"0","totalRows":0,"type":"update","rows":0,"begin":0,"thisBegin ":0}}}],"status":false}
+2020-06-20 12:56:10 [WARN] [gts-userdata-service] [93296:AsyncReporter{org.springframework.cloud.sleuth.zipkin2.sender.RestTemplateSender@2a0a4b47}] [52] [java-visitor] [] No up servers available from load balancer: DynamicServerListLoadBalancer:{NFLoadBalancer:name=localhost,current list of Servers=[],Load balancer stats=Zone stats: {},Server stats: []}ServerList:org.springframework.cloud.netflix.ribbon.eureka.DomainExtractingServerList@3a80a55d
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-3] [211] [java-visitor] [5ad11c7445144e6]  qianduan; baowen; request body：{"gid":{"pg":"global","idx":"1003"},"http":[{"condition":{"must":[{"term":{"userid":"1635766832800927744"}}]},"field":["sectorid","sectorname"],"gid":{"name":"customStockCate","id":"0,0"},"pageNo":0,"pageSize":10,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-3] [67] [java-visitor] [5ad11c7445144e6] findUserSectorById,findOne耗时：6
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-3] [52] [java-visitor] [5ad11c7445144e6] 初始化查询自选股目录,总耗时：6
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-3] [100] [java-visitor] [5ad11c7445144e6]  UserSectorProvider; listUserSectorById; useTime:8; [RequestQuery(httpType=query, http=[com.gangtise.common.utils.gtshttprequest.RequestQuery$QueryObject@23669d77])]
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-3] [135] [java-visitor] [5ad11c7445144e6]  UserSectorProvider; listUserSectorById; RESULT : {"gid":{"pg":"global","idx":"1003"},"lang":"en-us","msg":"success","result":[{"table":{"data":[["1635766830942441472","WatchList",""],["1635766830833250304","Recent",""]],"field":[["sectorid","t"],["sectorname","t"],["path","t"]],"gid":{"name":"customStockCate","id":"0,0"},"info":{"mode":"table","dataRange":2,"dataBegin":1,"rank":"row","compressed":"0","totalRows":2,"type":"update","rows":2,"begin":1,"thisBegin ":1}}}],"status":true}
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-2] [211] [java-visitor] [95b8fde01be847a]  qianduan; baowen; request body：{"gid":{"pg":"2","idx":"1"},"http":[{"condition":{"must":[{"term":{"userid":"1635766832800927744"}},{"term":{"key":"KSE100.PSX_day"}}]},"field":["lineid","name","desc","linedata"],"gid":{"name":"drawLineQuery","id":"1,2"},"pageNo":0,"pageSize":10,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-2] [100] [java-visitor] [95b8fde01be847a]  ChartDrawlineProvider; selectDrawLinesByKey; useTime:11; [RequestQuery(httpType=query, http=[com.gangtise.common.utils.gtshttprequest.RequestQuery$QueryObject@327f9f7b])]
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-2] [135] [java-visitor] [95b8fde01be847a]  ChartDrawlineProvider; selectDrawLinesByKey; RESULT : {"gid":{"pg":"2","idx":"1"},"lang":"en-us","msg":"未查询到数据","result":[{"table":{"data":[],"field":[],"gid":{"name":"drawLineQuery","id":"1,2"},"info":{"mode":"table","dataRange":0,"dataBegin":0,"rank":"row","compressed":"0","totalRows":0,"type":"update","rows":0,"begin":0,"thisBegin ":0}}}],"status":true}
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-1] [211] [java-visitor] [cab5f7f4c350441]  qianduan; baowen; request body：{"gid":{"pg":"global","idx":"0"},"http":[{"condition":{"must":[{"term":{"userid":"{{ UserVariables.userId }}"}}]},"field":["sectorid","sectorname"],"gid":{"name":"customStockCate","id":"0,0"},"pageNo":0,"pageSize":10,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-1] [67] [java-visitor] [cab5f7f4c350441] findUserSectorById,findOne耗时：5
+2020-06-20 12:56:10 [ERROR] [gts-userdata-service] [93296:http-nio-12001-exec-1] [83] [java-visitor] [cab5f7f4c350441] i18n error: msg Can't find resource for bundle java.util.PropertyResourceBundle, key 无法查询到该用户信息！
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-1] [100] [java-visitor] [cab5f7f4c350441]  UserSectorProvider; listUserSectorById; useTime:8; [RequestQuery(httpType=query, http=[com.gangtise.common.utils.gtshttprequest.RequestQuery$QueryObject@58219efb])]
+2020-06-20 12:56:10 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-1] [135] [java-visitor] [cab5f7f4c350441]  UserSectorProvider; listUserSectorById; RESULT : {"gid":{"pg":"global","idx":"0"},"lang":"en-us","msg":"无法查询到该用户信息！","result":[{"table":{"data":[],"field":[],"gid":{"name":"customStockCate","id":"0,0"},"info":{"mode":"table","dataRange":0,"dataBegin":0,"rank":"row","compressed":"0","totalRows":0,"type":"update","rows":0,"begin":0,"thisBegin ":0}}}],"status":false}
+2020-06-20 12:56:11 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-4] [211] [java-visitor] [f886be8d06eb4d0]  qianduan; baowen; request body：{"gid":{"pg":"2","idx":"0"},"http":[{"condition":{"must":[{"term":{"userid":"1635766832800927744"}}]},"field":["secucode"],"gid":{"name":"getUserStockForSectorId","id":"1,0"},"pageNo":0,"pageSize":13,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:11 [ERROR] [gts-userdata-service] [93296:http-nio-12001-exec-4] [83] [java-visitor] [f886be8d06eb4d0] i18n error: msg Can't find resource for bundle java.util.PropertyResourceBundle, key 必输项条件不能为空：[sectorid]
+2020-06-20 12:56:11 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-4] [100] [java-visitor] [f886be8d06eb4d0]  UserSectorProvider; findUserSectorSecuritys; useTime:2; [RequestQuery(httpType=query, http=[com.gangtise.common.utils.gtshttprequest.RequestQuery$QueryObject@7be3b37f])]
+2020-06-20 12:56:11 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-4] [135] [java-visitor] [f886be8d06eb4d0]  UserSectorProvider; findUserSectorSecuritys; RESULT : {"gid":{"pg":"2","idx":"0"},"lang":"en-us","msg":"必输项条件不能为空：[sectorid]","result":[{"table":{"data":[],"field":[],"gid":{"name":"getUserStockForSectorId","id":"1,0"},"info":{"mode":"table","dataRange":0,"dataBegin":0,"rank":"row","compressed":"0","totalRows":0,"type":"update","rows":0,"begin":0,"thisBegin ":0}}}],"status":false}
+2020-06-20 12:56:11 [INFO] [gts-userdata-service] [93296:http-nio-12001-exec-6] [211] [java-visitor] [ecbe4dd2471c450]  qianduan; baowen; request body：{"gid":{"pg":"global","idx":"9999"},"http":[{"condition":{"must":[{"term":{"userid":"1635766832800927744"}},{"term":{"sectorid":"1635766830942441472"}}]},"field":["secucode"],"gid":{"name":"listWList_163576683094244147248766","id":"listWList_163576683094244147248766,0"},"pageNo":0,"pageSize":10,"type":"query"}],"httpType":"query","lang":"en-us"}
+2020-06-20 12:56:11 [ERROR] [gts-userdata-service] [93296:http-nio-12001-exec-6] [78] [java-visitor] [] Command failed with error 16500: 'Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({
+  "Errors": [
+    "Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429"
+  ]
+});' on server gangtise-southeastasia.mongo.cosmos.azure.com:10255. The full response is { "ok" : 0.0, "errmsg" : "Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({\r\n  \"Errors\": [\r\n    \"Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429\"\r\n  ]\r\n});", "code" : 16500, "codeName" : "RequestRateTooLarge" }; nested exception is com.mongodb.MongoCommandException: Command failed with error 16500: 'Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({
+  "Errors": [
+    "Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429"
+  ]
+});' on server gangtise-southeastasia.mongo.cosmos.azure.com:10255. The full response is { "ok" : 0.0, "errmsg" : "Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({\r\n  \"Errors\": [\r\n    \"Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429\"\r\n  ]\r\n});", "code" : 16500, "codeName" : "RequestRateTooLarge" }
+
+org.springframework.data.mongodb.UncategorizedMongoDbException: Command failed with error 16500: 'Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({
+  "Errors": [
+    "Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429"
+  ]
+});' on server gangtise-southeastasia.mongo.cosmos.azure.com:10255. The full response is { "ok" : 0.0, "errmsg" : "Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({\r\n  \"Errors\": [\r\n    \"Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429\"\r\n  ]\r\n});", "code" : 16500, "codeName" : "RequestRateTooLarge" }; nested exception is com.mongodb.MongoCommandException: Command failed with error 16500: 'Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({
+  "Errors": [
+    "Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429"
+  ]
+});' on server gangtise-southeastasia.mongo.cosmos.azure.com:10255. The full response is { "ok" : 0.0, "errmsg" : "Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({\r\n  \"Errors\": [\r\n    \"Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429\"\r\n  ]\r\n});", "code" : 16500, "codeName" : "RequestRateTooLarge" }
+	at org.springframework.data.mongodb.core.MongoExceptionTranslator.translateExceptionIfPossible(MongoExceptionTranslator.java:131)
+	at org.springframework.data.mongodb.core.MongoTemplate.potentiallyConvertRuntimeException(MongoTemplate.java:2589)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:499)
+	at org.springframework.data.mongodb.core.MongoTemplate.executeCommand(MongoTemplate.java:437)
+	at org.springframework.data.mongodb.core.MongoTemplate$BatchAggregationLoader.aggregateBatched(MongoTemplate.java:3146)
+	at org.springframework.data.mongodb.core.MongoTemplate$BatchAggregationLoader.aggregate(MongoTemplate.java:3113)
+	at org.springframework.data.mongodb.core.MongoTemplate.aggregate(MongoTemplate.java:1937)
+	at org.springframework.data.mongodb.core.MongoTemplate.aggregate(MongoTemplate.java:1841)
+	at com.gangtise.userdata.biz.sector.service.impl.UserSectorRepositoryImpl.findUserSecuritysByPages(UserSectorRepositoryImpl.java:501)
+	at com.gangtise.userdata.biz.sector.provider.UserSectorProvider.findUserSectorSecuritys(UserSectorProvider.java:157)
+	at com.gangtise.userdata.biz.sector.provider.UserSectorProvider$$FastClassBySpringCGLIB$$9f4239a4.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:746)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:88)
+	at com.gangtise.common.aspect.QueryResponseAspect.methodHandler(QueryResponseAspect.java:96)
+	at com.gangtise.common.aspect.QueryResponseAspect.methodRHandler(QueryResponseAspect.java:54)
+	at sun.reflect.GeneratedMethodAccessor128.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:644)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:633)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:70)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:185)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:688)
+	at com.gangtise.userdata.biz.sector.provider.UserSectorProvider$$EnhancerBySpringCGLIB$$6e9c4fa2.findUserSectorSecuritys(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:209)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:877)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:783)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:991)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:925)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:877)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:661)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:851)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:742)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.filterAndRecordMetrics(WebMvcMetricsFilter.java:158)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.filterAndRecordMetrics(WebMvcMetricsFilter.java:126)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:111)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.boot.actuate.web.trace.servlet.HttpTraceFilter.doFilterInternal(HttpTraceFilter.java:84)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.cloud.sleuth.instrument.web.ExceptionLoggingFilter.doFilter(ExceptionLoggingFilter.java:48)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at brave.servlet.TracingFilter.doFilter(TracingFilter.java:86)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:496)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:790)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1468)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: com.mongodb.MongoCommandException: Command failed with error 16500: 'Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({
+  "Errors": [
+    "Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429"
+  ]
+});' on server gangtise-southeastasia.mongo.cosmos.azure.com:10255. The full response is { "ok" : 0.0, "errmsg" : "Error=16500, RetryAfterMs=40, Details='Response status code does not indicate success: TooManyRequests (429); Substatus: 3200; ActivityId: 68e7e4ad-e291-4f2b-ac01-772d4e592fe9; Reason: ({\r\n  \"Errors\": [\r\n    \"Request rate is large. More Request Units may be needed, so no changes were made. Please retry this request later. Learn more: http://aka.ms/cosmosdb-error-429\"\r\n  ]\r\n});", "code" : 16500, "codeName" : "RequestRateTooLarge" }
+	at com.mongodb.connection.ProtocolHelper.getCommandFailureException(ProtocolHelper.java:164)
+	at com.mongodb.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:295)
+	at com.mongodb.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:255)
+	at com.mongodb.connection.UsageTrackingInternalConnection.sendAndReceive(UsageTrackingInternalConnection.java:98)
+	at com.mongodb.connection.DefaultConnectionPool$PooledConnection.sendAndReceive(DefaultConnectionPool.java:441)
+	at com.mongodb.connection.CommandProtocolImpl.execute(CommandProtocolImpl.java:80)
+	at com.mongodb.connection.DefaultServer$DefaultServerProtocolExecutor.execute(DefaultServer.java:189)
+	at com.mongodb.connection.DefaultServerConnection.executeProtocol(DefaultServerConnection.java:264)
+	at com.mongodb.connection.DefaultServerConnection.command(DefaultServerConnection.java:126)
+	at com.mongodb.connection.DefaultServerConnection.command(DefaultServerConnection.java:118)
+	at com.mongodb.operation.CommandOperationHelper.executeWrappedCommandProtocol(CommandOperationHelper.java:226)
+	at com.mongodb.operation.CommandOperationHelper.executeWrappedCommandProtocol(CommandOperationHelper.java:197)
+	at com.mongodb.operation.CommandOperationHelper.executeWrappedCommandProtocol(CommandOperationHelper.java:189)
+	at com.mongodb.operation.CommandOperationHelper.executeWrappedCommandProtocol(CommandOperationHelper.java:99)
+	at com.mongodb.operation.CommandOperationHelper.executeWrappedCommandProtocol(CommandOperationHelper.java:92)
+	at com.mongodb.operation.CommandReadOperation.execute(CommandReadOperation.java:55)
+	at com.mongodb.Mongo$3.execute(Mongo.java:826)
+	at com.mongodb.MongoDatabaseImpl.executeCommand(MongoDatabaseImpl.java:166)
+	at com.mongodb.MongoDatabaseImpl.runCommand(MongoDatabaseImpl.java:138)
+	at com.mongodb.MongoDatabaseImpl.runCommand(MongoDatabaseImpl.java:133)
+	at org.springframework.data.mongodb.core.MongoTemplate$4.doInDB(MongoTemplate.java:440)
+	at org.springframework.data.mongodb.core.MongoTemplate$4.doInDB(MongoTemplate.java:437)
+	at org.springframework.data.mongodb.core.MongoTemplate.execute(MongoTemplate.java:497)
+	... 95 common frames omitted

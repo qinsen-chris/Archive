@@ -9,5 +9,5 @@ spec:
   scaleTargetRef:   
     apiVersion: apps/v1
     kind: Deployment  
-    name: gangtise-auth-service   # 监控名为ms-wechat的Deployment
+    name: gangtise-auth-service   # 监控名为gangtise-auth-service的Deployment
   targetCPUUtilizationPercentage: 50  # cpu 阈值

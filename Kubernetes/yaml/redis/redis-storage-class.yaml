@@ -1,0 +1,10 @@
+#Microsoft Azure Configuration
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: redis-storage-class  #StorageClass name
+  namespace: default
+provisioner: kubernetes.io/azure-disk
+parameters:
+  storageaccounttype: Standard_LRS
+  kind: managed

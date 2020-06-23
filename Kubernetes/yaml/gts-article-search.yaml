@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gts-article-search
+  namespace: spring-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gts-article-search
+  template:
+    metadata:
+      labels:
+        app: gts-article-search
+    spec:
+      containers:
+      - name: gts-keyboard-search
+        image: gangtiseacr.azurecr.cn/gts-article-search:0.0.1
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+        ports:
+        - containerPort: 13010
+        envFrom:
+        - configMapRef:
+            name: spring-config
+        env:
+          - name: ES_CLUSTER_NAME
+            value: elasticsearch
+          - name: ES_NODES
+            value: 10.0.2.10:9300,10.0.2.11:9300,10.0.2.12:9300
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gts-article-search
+  namespace: spring-app
+spec:
+  ports:
+  - port: 13010
+  selector:
+    app: gts-article-search
