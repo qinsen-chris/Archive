@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdemo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springdemo
+  template:
+    metadata:
+      labels:
+        app: springdemo
+    spec:
+      containers:
+      - name: springdemo
+        image: gangtiseacr.azurecr.cn/springdemo:configmap
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 8899
+          name: springdemo
+          
+        volumeMounts:
+        - mountPath: /config        #挂载路径  springboot 所在路径中优先级最高的路径
+          name: bootstrap-conf      #跟下面名称一致
+          
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: bootstrap.yml   #ConfigMap中key名称
+                path: bootstrap.yml   
+            name: test-configmap     #ConfigMap名称
+          name: bootstrap-conf   
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springdemo
+spec:
+  type: NodePort
+  ports:
+  - port: 8899
+    targetPort: 8899
+    nodePort: 30099
+  selector:
+    app: springdemo

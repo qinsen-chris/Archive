@@ -11,15 +11,15 @@ data:
   # eureka 
   EUREKA_SERVER: "http://eureka-0.eureka:1025/eureka/,http://eureka-1.eureka:1025/eureka/"
   # ribbon
-  READ_TIMEOUT: 8000
-  CONNECT_TIMEOUT: 8000
+  READ_TIMEOUT: 20000
+  CONNECT_TIMEOUT: 20000
   # hystrix
-  COMMAND_TIMEOUT: 45000
+  COMMAND_TIMEOUT: 80000
   # redis
   REDIS_IP: "10.10.1.5"
   REDIS_PORT: "6379"
   REDIS_PASSWORD: "BE1fuDPT1Csfn3imPXXN+8zc31TPnmvpPZ+wHrr63rk="
-  REDIS_NODES: "10.10.1.5:13000,10.10.1.5:13001,10.10.1.5:13002,10.10.1.5:13003,10.10.1.5:13004,10.10.1.5:13005"
+  REDIS_NODES: "redis.default:6379"
   # kafka
   KAFKA_SERVERS: 10.0.3.4:9092,10.0.3.5:9092,10.0.3.9:9092,10.0.3.10:9092
   # 东亚前海url  地址需要修改

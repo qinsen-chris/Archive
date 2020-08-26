@@ -15,7 +15,7 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: 139.217.56.122
-          servicePort: 8899
+          serviceName: gangtise-gateway-visitor
+          servicePort: 1925
         path: /(.*)
 

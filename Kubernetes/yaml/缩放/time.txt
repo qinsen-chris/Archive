@@ -3,3 +3,6 @@
 
 
 #注意时间也跟当前系统时间对应
+crontab -l
+
+crontab -e

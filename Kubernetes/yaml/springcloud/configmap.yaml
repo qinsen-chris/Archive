@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-config
+  namespace: spring-app
+data:
+  # spring 
+  SPRING_ACTIVE: sit
+  # log
+  LOG_FLATFILE_PATH: /export/home/log
+  # eureka 
+  EUREKA_SERVER: "http://eureka-0.eureka:1025/eureka/,http://eureka-1.eureka:1025/eureka/"
+  # ribbon
+  READ_TIMEOUT: 20000
+  CONNECT_TIMEOUT: 20000
+  # hystrix
+  COMMAND_TIMEOUT: 80000
+  # redis
+  REDIS_PASSWORD: ""
+  REDIS_NODES: "redis.default:6379"
+  # kafka
+  KAFKA_SERVERS: 10.0.3.4:9092,10.0.3.5:9092,10.0.3.9:9092,10.0.3.10:9092
+  # 东亚前海url  地址需要修改
+  EA_SERVICE_IP: 192.168.1.71:8080
+  # elasticsearch 
+  ES_CLUSTER_NAME: elasticsearch
+  ES_NODES: 10.0.2.10:9300,10.0.2.11:9300,10.0.2.12:9300
+  
+
+
+  
+

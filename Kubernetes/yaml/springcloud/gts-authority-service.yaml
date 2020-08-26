@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+    kubesphere.io/alias-name: gts-authority-service
+    kubesphere.io/maxSurgePod: '2'
+    kubesphere.io/minAvailablePod: '1'
+  creationTimestamp: '2020-06-30T07:19:23Z'
+  generation: 2
+  labels:
+    app: gts-authority-service
+  name: gts-authority-service
+  namespace: spring-app
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: gts-authority-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubesphere.io/containerSecrets: '{"container-oiakdk":"azure-acr"}'
+      creationTimestamp: null
+      labels:
+        app: gts-authority-service
+    spec:
+      affinity: {}
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: spring-config
+          image: 'gangtiseacr.azurecr.cn/gts-authority-service:1.0.0'
+          imagePullPolicy: IfNotPresent
+          name: container-oiakdk
+          ports:
+            - containerPort: 10011
+              name: http-authority
+              protocol: TCP
+          resources:
+            limits:
+              cpu: '1'
+              memory: 1000Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: azure-acr
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubesphere.io/serviceType: statelessservice
+  creationTimestamp: '2020-06-30T07:19:23Z'
+  labels:
+    app: gts-authority-service
+  name: gts-authority-service
+  namespace: spring-app
+spec:
+  clusterIP: 110.0.140.122
+  ports:
+    - name: http-authority
+      port: 10011
+      protocol: TCP
+      targetPort: 10011
+  selector:
+    app: gts-authority-service
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  type: ClusterIP
+

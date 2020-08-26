@@ -1,0 +1,37 @@
+为node服务器配置label:
+kubectl label node 192.168.174.135 label_key_135=label_value_135
+
+查看：
+kubectl get node --show-labels
+
+创建Pod:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-node-selector
+  labels:
+    key-node-selector: value-node-selector
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  nodeSelector:
+    label_key_135: label_value_135
+	
+查看是否部署到了指定节点：
+kubectl get pod -o wide
+	
+	
+删除label:
+kubectl label node 192.168.174.135 label_key_135-
+
+
+生产：
+kubectl label node aks-cpu8-10310112-vmss000000 nodeflag=flink
+kubectl label node aks-cpu8-10310112-vmss000001 nodeflag=flink
+
+
+	
+	
+	

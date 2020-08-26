@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: springdemo
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: springdemo
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: springdemo
-        image: gangcloudapp.azurecr.cn/springdemo:1.0
+        image: gangtiseacr.azurecr.cn/springdemo:1.0
         resources:
           requests:
             cpu: 100m

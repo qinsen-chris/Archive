@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gts-keyboard-yhty
+  namespace: spring-app-visitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gts-keyboard-yhty
+  template:
+    metadata:
+      labels:
+        app: gts-keyboard-yhty
+    spec:
+      containers:
+      - name: gts-keyboard-yhty
+        image: gangtiseacr.azurecr.cn/gts-yhty-search:1.0.0
+        resources:
+          requests:
+            cpu: 200m
+            memory: 800Mi
+          limits:
+            cpu: 600m
+            memory: 800Mi
+        ports:
+        - containerPort: 13006
+        envFrom:
+        - configMapRef:
+            name: spring-config-visitor
+        env:
+          - name: ES_CLUSTER_NAME
+            value: elasticsearch
+          - name: ES_NODES
+            value: 10.0.2.10:9300,10.0.2.11:9300,10.0.2.12:9300
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gts-keyboard-yhty
+  namespace: spring-app-visitor
+spec:
+  ports:
+  - port: 13006
+  selector:
+    app: gts-keyboard-yhty

@@ -1,0 +1,48 @@
+----------------------------------------污点
+https://www.ayunw.cn/archives/488
+
+kubectl describe node aks-agentpool-34148511-vmss000000
+
+打污点：
+kubectl taint nodes nodename flink-taint=true:NoSchedule
+或者 kubectl taint nodes nodename flink-taint=true:PreferNoSchedule
+
+
+
+Taints(污点)通常与Tolerations(容忍)配合使用 :
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: taint
+  labels:
+    app: taint
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: taint
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - name: http
+          containerPort: 80
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+		
+		
+生产：
+kubectl taint nodes aks-cpu8-10310112-vmss000000 flink-taint=true:NoSchedule
+kubectl taint nodes aks-cpu8-10310112-vmss000001 flink-taint=true:NoSchedule
+
+
+
+	
+	
+	

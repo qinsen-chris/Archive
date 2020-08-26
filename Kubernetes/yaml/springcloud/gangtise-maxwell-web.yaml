@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+  creationTimestamp: '2020-07-28T06:25:06Z'
+  generation: 1
+  labels:
+    app: gts-maxwell-web
+  name: gangtise-maxwell-web
+  namespace: spring-app
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: gts-maxwell-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubesphere.io/containerSecrets: '{"container-nwbair":"azure-acr"}'
+      creationTimestamp: null
+      labels:
+        app: gts-maxwell-web
+    spec:
+      affinity: {}
+      containers:
+        - image: 'gangtiseacr.azurecr.cn/gts-maxwell-web:1.0.0'
+          imagePullPolicy: IfNotPresent
+          name: container-nwbair
+          ports:
+            - containerPort: 9528
+              name: http-maxwellweb
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 10m
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: azure-acr
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {}
+  creationTimestamp: '2020-07-28T06:33:27Z'
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  name: gangtise-maxwell-web
+  namespace: spring-app
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: gts-maxwell-web
+      nodePort: 32318
+      port: 9528
+      protocol: TCP
+      targetPort: 9528
+  selector:
+    app: gts-maxwell-web
+  sessionAffinity: None
+  type: LoadBalancer
+

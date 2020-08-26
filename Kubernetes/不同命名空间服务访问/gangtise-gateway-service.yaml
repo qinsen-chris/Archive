@@ -1,0 +1,7 @@
+      #用户数据
+      userdata:
+        path: /userdata/**
+        serviceId: gts-userdata-service
+        #url:  http://gts-userdata-service.spring-app.svc.cluster.local:12001/
+		
+		

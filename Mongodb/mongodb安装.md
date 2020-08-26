@@ -89,13 +89,21 @@ db.dropUser(“qinsen”)
 
 ## 三、集群 
 
+https://blog.csdn.net/kevinmcy/article/details/82712074
+
+
+
 //192.168.1.61  单节点
 
 192.168.1.15    主
 
-192.168.1.68    备
+192.168.1.164  备
 
-192.168.1.60    仲裁节点  - > 192.168.1.164
+192.168.1.68    仲裁节点
+
+
+
+#192.168.1.60    仲裁节点  - > 192.168.1.164
 
 
 
@@ -203,7 +211,7 @@ noprealloc：不预先分配存储
 
 连接到节点：
 
- ./mongo 192.168.1.15:27017
+ /home/mongodb/bin/mongo 192.168.1.15:27017
 
 忽略启动的警告信息，没有报错就是连接上了客户端
 
@@ -211,7 +219,7 @@ noprealloc：不预先分配存储
 
 use admin；
 
-cfg={ _id:"mongors", members:[ {_id:0,host:'192.168.1.15:27017',priority:2}, {_id:1,host:'192.168.1.68:27017',priority:1}, {_id:2,host:'192.168.1.60:27018',arbiterOnly:true}] }; 
+cfg={ _id:"mongors", members:[ {_id:0,host:'192.168.1.68:27017',priority:1}, {_id:1,host:'192.168.1.15:27017',priority:2}, {_id:2,host:'192.168.1.164:27018',arbiterOnly:true}] }; 
 
 rs.initiate(cfg) ; 
 

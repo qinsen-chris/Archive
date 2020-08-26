@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gts-userdata-service
+  namespace: spring-app-visitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gts-userdata-service
+  template:
+    metadata:
+      labels:
+        app: gts-userdata-service
+    spec:
+      containers:
+      - name: gts-userdata-service
+        image: gangtiseacr.azurecr.cn/gts-userdata-service:1.0.8.1
+        resources:
+          requests:
+            cpu: 250m
+            memory: 960Mi
+          limits:
+            cpu: 960m
+            memory: 960Mi
+        ports:
+        - containerPort: 12001
+        envFrom:
+        - configMapRef:
+            name: spring-config-visitor
+        env:
+          - name: KAFKA_GROUP_ID
+            value: userdataGroup
+          - name: VISITOR_SYNC_TOPIC
+            value: user_data_sync
+          - name: MONGODB_URI
+            value: mongodb://gangtise:5kGYjDURA1tboaY5lih53kJ5mU0ZQVJkfJ183jIMofrbDmtyF4JFXtmjsDWrMNd7UPR5pEaCnOzH54Un6tpW2g==@gangtise.mongo.cosmos.azure.cn:10255/user_data_visitor?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@gangtise@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gts-userdata-service
+  namespace: spring-app-visitor
+spec:
+  ports:
+  - port: 12001
+  selector:
+    app: gts-userdata-service

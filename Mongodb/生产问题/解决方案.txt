@@ -1,0 +1,31 @@
+
+解决方案： limit之前添加$group 、$replaceRoot
+
+db.getCollection('usersector').aggregate([
+{"$unwind":"$userSectorSecuritys" },
+{"$match":{"userid":"1669078534318891008","userSectorSecuritys.sectorId":"1669078530761560064"}},
+{"$project":{"userSectorSecuritys.securitys":1,_id:0}},
+{"$unwind":"$userSectorSecuritys.securitys" },
+{$skip:0},
+{$group:{"_id":"$$ROOT"}},
+{$replaceRoot:{"newRoot":"$_id"}},
+{$limit:3}
+
+
+java代码改造：
+
+Field groupField =  Fields.field(Fields.UNDERSCORE_ID,"$$ROOT");
+Fields groupFields = Fields.from(groupField);
+
+Aggregation aggregation = newAggregation(
+		unwind("$userSectorSecuritys"),
+		match(Criteria.where("userid").is(in.getUserid()).and("userSectorSecuritys.sectorId").is(in.getSectorId())),
+		project("userSectorSecuritys.securitys").andExclude("_id"),
+		unwind("$securitys"),  //跟语句查询不一致 $userSectorSecuritys.securitys
+		skip(skip),
+		group(groupFields),
+		replaceRoot("_id"),
+		limit((long)in.getSize())
+);
+AggregationResults<UserSectorSecuritys> results = mongoTemplate.aggregate(aggregation, UserDataCollection.USER_SECTOR, UserSectorSecuritys.class);
+List<UserSectorSecuritys> resultList = results.getMappedResults();

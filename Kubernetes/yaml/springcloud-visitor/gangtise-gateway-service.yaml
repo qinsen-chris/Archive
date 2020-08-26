@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gangtise-gateway-service
+  namespace: spring-app-visitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gangtise-gateway-service
+  template:
+    metadata:
+      labels:
+        app: gangtise-gateway-service
+    spec:
+      containers:
+      - name: gangtise-gateway-service
+        image: gangtiseacr.azurecr.cn/gangtise-gateway-service:1.0.7-beta
+        resources:
+          requests:
+            cpu: 250m
+            memory: 960Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+        ports:
+        - containerPort: 1925
+        envFrom:
+        - configMapRef:
+            name: spring-config-visitor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gangtise-gateway-service
+  namespace: spring-app-visitor
+spec:
+  type: NodePort
+  ports:
+    - port: 1925
+      targetPort: 1925
+      nodePort: 30925
+  selector:
+    app: gangtise-gateway-service

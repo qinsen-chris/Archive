@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gangtise-gateway-service
+  namespace: spring-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gangtise-gateway-service
+  template:
+    metadata:
+      labels:
+        app: gangtise-gateway-service
+    spec:
+      containers:
+      - name: gangtise-gateway-service
+        image: gangtiseacr.azurecr.cn/gangtise-gateway-service
+        resources:
+          requests:
+            cpu: 250m
+            memory: 960Mi
+          limits:
+            cpu: 250m
+            memory: 960Mi
+        ports:
+        - containerPort: 1925
+        envFrom:
+        - configMapRef:
+            name: spring-config
+                  
+        volumeMounts:
+        - mountPath: /config        
+          name: gateway-config
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: bootstrap.yml   
+                path: bootstrap.yml   
+            name: gateway-config     
+          name: gateway-config  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gangtise-gateway-service
+  namespace: spring-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 1925
+      name: gangtise-gateway-service
+  selector:
+    app: gangtise-gateway-service
