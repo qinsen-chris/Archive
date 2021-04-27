@@ -9,7 +9,7 @@ data:
     port 6379
 kind: ConfigMap
 metadata:
-  creationTimestamp: '2020-06-15T01:24:54Z'
+  creationTimestamp: '2021-04-08T01:24:54Z'
   name: redis-conf
   namespace: default
   resourceVersion: '283327'
