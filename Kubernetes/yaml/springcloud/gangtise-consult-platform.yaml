@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gangtise-consult-platform
+  namespace: spring-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gangtise-consult-platform
+  template:
+    metadata:
+      labels:
+        app: gangtise-consult-platform
+    spec:
+	  imagePullSecrets:
+        - name: default-secret
+      containers:
+      - name: gangtise-consult-platform
+        image: swr.cn-south-1.myhuaweicloud.com/gangtise-dev/gangtise-consult-platform:1.0.0
+        ports:
+        - containerPort: 10041
+        envFrom:
+        - configMapRef:
+            name: spring-config
+        volumeMounts:
+        - mountPath: /config       
+          name: consult-platform     
+      volumes:
+        - configMap:
+            defaultMode: 420
+            items:
+              - key: application.yml   #ConfigMap÷–key√˚≥∆
+                path: application.yml   
+            name: gangtise-consult-platform     #ConfigMap√˚≥∆
+          name: gangtise-consult-platform
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gangtise-consult-platform
+  namespace: spring-app
+spec:
+  ports:
+  - port: 10041
+  selector:
+    app: gangtise-consult-platform
