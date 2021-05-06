@@ -385,3 +385,10 @@ docker exec -it mymongo /bin/bash
 mongodump -h 127.0.0.1 --port 27017 -d test -o /test/mongodBack   //在容器内部，导出数据到容器内部的指定文件夹
 
 退出docker mongodb容器：docker cp <mongodb容器名>:/test/mongodBack/  /home/opt/mongodbData/(此为真机目录)
+
+
+
+
+
+# kubernetes部署mongo集群
+https://github.com/bitnami/charts/tree/master/bitnami/mongodb-sharded
